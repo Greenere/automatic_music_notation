@@ -22,7 +22,7 @@ write('output.wav', fs, myrecording)  # Save as WAV file
 
 
 def control():
-  pass  
+  pass
 
 def recording():
   pass

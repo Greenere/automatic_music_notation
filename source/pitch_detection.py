@@ -6,15 +6,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
 from scipy.signal import find_peaks
-import soundfile
-import os
 
 # Single Pitch Detection
 
 def pitch_detection(file_path):
     # load a file, get the music and the sample_freq
-    data, sample_freq = librosa.load(soundfile.SoundFile(file_path))
-    T = 1 / sample_freq
+    data, sample_freq = librosa.load(file_path)
     N = len(data)
 
     Y_k = np.fft.fft(data)[0:int(N/2)]/N # FFT
@@ -24,12 +21,22 @@ def pitch_detection(file_path):
     f = sample_freq * np.arange((N/2)) / N; # frequencies
 
     # plotting
-    fig,ax = plt.subplots()
+    plt.subplots()
     plt.plot(f[0:5000], Pxx[0:5000], linewidth=2)
     plt.ylabel('Amplitude')
     plt.xlabel('Frequency [Hz]')
-    plt.show()(path)
+    plt.show()
+
+    auto = sm.tsa.acf(data, nlags=2000)
+    peaks = find_peaks(auto)[0] # Find peaks of the autocorrelation
+    lag = peaks[0] # Choose the first peak as our pitch component lag
+
+    pitch_freq = sample_freq / lag # Transform lag into frequency
+    pitch_note = librosa.hz_to_note(pitch_freq)
+
+    return pitch_note
 
 
-pitch_freq = pitch_detection("/home/zhao/Documents/automatic_music_notation/sound_track/dou1.mp3")
+
+pitch_freq = pitch_detection("/home/pi/automatic_music_notation/sound_track/Tuning fork 9.mp3")
 print(pitch_freq)
