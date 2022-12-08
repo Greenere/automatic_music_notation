@@ -23,3 +23,28 @@ def write_piece(piece, filename, fs = 44100):
 def save_short_piece(piece, filename):
   piece.dump(filename)
 
+def extract_pieces(piece, event_times, fs = 44100):
+  # Stop the recording
+  sd.stop()
+  #print(event_times)
+  pieces = []
+  prev_sec = 0
+  paused = False
+  for event, sec in event_times:
+    if event == "pause":
+      short_piece = piece[int(prev_sec*fs):int(sec*fs),:]
+      print("Get a piece between %f and %f"%(prev_sec, sec))
+      pieces.append(short_piece)
+      paused = True
+    elif event == "resume":
+      prev_sec = sec
+      paused = False
+    elif event == "end":
+      if not paused:
+        short_piece = piece[int(prev_sec*fs):int(sec*fs),:]
+        print("Get a piece between %f and %f"%(prev_sec, sec))
+        pieces.append(short_piece)
+  
+  large_piece = np.vstack(pieces)
+  #print(large_piece.shape)
+  return large_piece

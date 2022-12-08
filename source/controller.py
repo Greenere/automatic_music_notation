@@ -12,6 +12,8 @@ _HEIGHT = 240
 _IMAGE_PATH = "source/Music-notes-symbols-clip-art-free-clipart-images-2.jpg"
 _SIZE = 100
 _RED = (255, 0, 0)
+_BLACK = (0, 0, 0)
+_WHITE = (255, 255, 255)
 
 os.putenv('SDL_VIDEODRIVER', 'fbcon') # Display on piTFT 
 os.putenv('SDL_FBDEV', '/dev/fb0') 
@@ -24,6 +26,7 @@ pygame.mouse.set_visible(False)
 width, height = _WIDTH, _HEIGHT
 size = (width, height)
 screen = pygame.display.set_mode(size)
+screen.fill(_WHITE)
 
 def mouse_on_button(mouse, rect):
     x, y, width, height = rect.centerx, rect.centery, rect.w, rect.h
@@ -38,28 +41,29 @@ def get_music_note_symbol(image_path, size, x, y):
     music_note_symbol_rect = music_note_symbol_rect.move([int(x),int(y)])
     return music_note_symbol, music_note_symbol_rect
 
-def draw_boundary(rect):
+def draw_boundary(rect, color):
     x, y, width, height = rect.centerx, rect.centery, rect.w, rect.h
     vertex = [(x - width//2, y - height//2),
               (x - width//2, y + height//2),
               (x + width//2, y + height//2),
               (x + width//2, y - height//2)]
-    boundary = pygame.draw.lines(screen, _RED, True, vertex, 3)
+    boundary = pygame.draw.lines(screen, color, True, vertex, 3)
     return boundary
 
-def highlight(boundary):
-    boundary.set_visible(True)
+# Warning: draw a large number of lines, need to be optimize
+def highlight(rect):
+    draw_boundary(rect, _RED)
     pygame.display.flip()
 
-def resume(boundary):
-    boundary.set_visible(False)
+def resume(rect):
+    draw_boundary(rect, _WHITE)
     pygame.display.flip()
 
 
 music_note_symbol, music_note_symbol_rect = get_music_note_symbol(_IMAGE_PATH, _SIZE, _WIDTH / 3, _HEIGHT / 3)
 screen.blit(music_note_symbol, music_note_symbol_rect)
-boundary = draw_boundary(music_note_symbol_rect)
-boundary.set_visible(False)
+# boundary = draw_boundary(music_note_symbol_rect)
+# boundary.set_visible(False)
 pygame.display.flip()
 
 GPIO.setmode(GPIO.BCM)   # Set for broadcom numbering
@@ -83,27 +87,29 @@ def quit_pressed() -> bool:
 # The funciton will be invoked in the whole process loop
 def beat_pressed() -> bool:
     is_pressed = False
-    start_time = time.time()
-    while (time.time() - start_time <= 100):
-        for ev in pygame.event.get():
-            mouse_pos = pygame.mouse.get_pos()
-            if ev.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+    # start_time = time.time()
+    # while True:
+    for ev in pygame.event.get():
+        
+        mouse_pos = pygame.mouse.get_pos()
+        if ev.type == pygame.QUIT:
+            pygame.quit()
+            exit()
 
-            if mouse_on_button(mouse_pos, music_note_symbol_rect):
-                if ev.type == pygame.MOUSEBUTTONDOWN:
-                    is_pressed = True
-                    highlight(boundary)
-                    pygame.display.flip()
-                if ev.type == pygame.MOUSEBUTTONUP:
-                    resume(boundary)
+        if mouse_on_button(mouse_pos, music_note_symbol_rect):
+            if ev.type == pygame.MOUSEBUTTONDOWN:
+                is_pressed = True
+                highlight(music_note_symbol_rect)
+                print(time.time())
+                pygame.display.flip()
+            if ev.type == pygame.MOUSEBUTTONUP:
+                resume(music_note_symbol_rect)
+                print(time.time())
 
-    
     return is_pressed
 
 # if beat is pressed, do recording
 def beat_recording() -> float:
     return time.time()
-    
+
 beat_pressed()
