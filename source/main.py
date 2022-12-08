@@ -1,6 +1,6 @@
 import numpy as np
 import time
-from enum import Enum
+import enum
 
 from recording import record_long_piece, extract_pieces, write_piece
 from controller import start_pressed, pause_pressed, end_pressed, quit_pressed, beat_pressed
@@ -15,11 +15,14 @@ Control Panal:
 - GPIO #27 (The Last Button): Quit
 """
 # Technically, we use status flags to indicate the states of the microphone
-class STATUS(Enum):
+
+
+class STATUS(enum.Enum):
     START_PRESSED = 1
     PAUSE_PRESSED = 2
-    CONTINUE_PRESSED = 3
-    END_PRESSED = 4
+    END_PRESSED = 3
+
+
 # This is the maximal length of a recording
 long_seconds = 600
 # This is the piece counter
@@ -39,47 +42,51 @@ while True:
         status = STATUS.START_PRESSED
     if status != STATUS.START_PRESSED:
         continue
-    
+
     # Started mode, it can either pause, resume, or quit
     paused = False
     event_secs = [("start", 0)]
-    beat_secs = []
+    beat_secs = [0]
     while status == STATUS.START_PRESSED:
         if quit_pressed():
             print("Quit the entire program")
             exit(0)
-        
+
         if end_pressed():
             end_time = time.time()
-            print("End the recording after %f seconds"%(end_time - start_time))
+            print("End the recording after %f seconds" %
+                  (end_time - start_time))
             status = STATUS.END_PRESSED
-        
+
         # Time out equals to an end_pressed()
         if time.time() - start_time >= long_seconds:
             end_time = time.time()
-            print("End the recording due to time out (%f seconds)"%(end_time - start_time))
+            print("End the recording due to time out (%f seconds)" %
+                  (end_time - start_time))
             status = STATUS.END_PRESSED
-        
+
         # The `paused` is used to debounce the buttons
         if pause_pressed() and not paused:
             pause_time = time.time()
-            print("Pause the recording after %f seconds" % (pause_time - start_time))
+            print("Pause the recording after %f seconds" %
+                  (pause_time - start_time))
             event_secs.append(("pause", pause_time-start_time))
             paused = True
-        
+
         if start_pressed() and paused:
             resume_time = time.time()
-            print("Resume the recording after %f seconds" % (resume_time - start_time))
+            print("Resume the recording after %f seconds" %
+                  (resume_time - start_time))
             event_secs.append(("resume", resume_time-start_time))
             paused = False
-        
+
         if beat_pressed():
             beat_secs.append(time.time() - start_time)
-    
+
     if status == STATUS.END_PRESSED:
         event_secs.append(("end", end_time - start_time))
         final_piece = extract_pieces(piece, event_secs)
-        write_piece(final_piece, "melody_%d.wav"%(melody_count))
+        write_piece(final_piece, "melody_%d.wav" % (melody_count))
         melody_count += 1
         print(beat_secs)
         event_secs = []
@@ -88,16 +95,7 @@ while True:
 ####### Pitch dectection ########
 
 
-
-
-
-
 ####### Output to notation ########
-
-
-
-
-
 
 
 ####### Interaction with Pi ########
