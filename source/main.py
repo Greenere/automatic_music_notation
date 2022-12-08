@@ -4,6 +4,7 @@ from enum import Enum
 
 from recording import record_long_piece, extract_pieces, write_piece
 from controller import start_pressed, pause_pressed, end_pressed, quit_pressed, beat_pressed
+from controller import beat_pressed
 
 ####### Recording ########
 """
@@ -14,7 +15,7 @@ Control Panal:
 - GPIO #27 (The Last Button): Quit
 """
 # Technically, we use status flags to indicate the states of the microphone
-class Status(Enum):
+class STATUS(Enum):
     START_PRESSED = 1
     PAUSE_PRESSED = 2
     CONTINUE_PRESSED = 3
@@ -24,7 +25,7 @@ long_seconds = 600
 # This is the piece counter
 melody_count = 0
 # This is the status of the recording program
-status = Status.END_PRESSED
+status = STATUS.END_PRESSED
 while True:
     # Idle mode, it can either start or quit
     if quit_pressed():
@@ -35,14 +36,15 @@ while True:
         # Start a long recording process in the background
         start_time = time.time()
         piece = record_long_piece(long_seconds)
-        status = Status.START_PRESSED
-    if status != Status.START_PRESSED:
+        status = STATUS.START_PRESSED
+    if status != STATUS.START_PRESSED:
         continue
     
     # Started mode, it can either pause, resume, or quit
     paused = False
     event_secs = [("start", 0)]
-    while status == Status.START_PRESSED:
+    beat_secs = []
+    while status == STATUS.START_PRESSED:
         if quit_pressed():
             print("Quit the entire program")
             exit(0)
@@ -50,13 +52,13 @@ while True:
         if end_pressed():
             end_time = time.time()
             print("End the recording after %f seconds"%(end_time - start_time))
-            status = Status.END_PRESSED
+            status = STATUS.END_PRESSED
         
         # Time out equals to an end_pressed()
         if time.time() - start_time >= long_seconds:
             end_time = time.time()
             print("End the recording due to time out (%f seconds)"%(end_time - start_time))
-            status = Status.END_PRESSED
+            status = STATUS.END_PRESSED
         
         # The `paused` is used to debounce the buttons
         if pause_pressed() and not paused:
@@ -70,13 +72,18 @@ while True:
             print("Resume the recording after %f seconds" % (resume_time - start_time))
             event_secs.append(("resume", resume_time-start_time))
             paused = False
+        
+        if beat_pressed():
+            beat_secs.append(time.time() - start_time)
     
-    if status == Status.END_PRESSED:
+    if status == STATUS.END_PRESSED:
         event_secs.append(("end", end_time - start_time))
         final_piece = extract_pieces(piece, event_secs)
         write_piece(final_piece, "melody_%d.wav"%(melody_count))
         melody_count += 1
+        print(beat_secs)
         event_secs = []
+        beat_secs = []
 
 ####### Pitch dectection ########
 

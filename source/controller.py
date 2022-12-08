@@ -100,11 +100,11 @@ def beat_pressed() -> bool:
             if ev.type == pygame.MOUSEBUTTONDOWN:
                 is_pressed = True
                 highlight(music_note_symbol_rect)
-                print(time.time())
+                #print(time.time())
                 pygame.display.flip()
             if ev.type == pygame.MOUSEBUTTONUP:
                 resume(music_note_symbol_rect)
-                print(time.time())
+                #print(time.time())
 
     return is_pressed
 
