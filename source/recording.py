@@ -7,37 +7,42 @@ import sounddevice as sd
 import numpy as np
 from scipy.io.wavfile import write
 
+from logger import log_debug
 
-def record_short_piece(seconds, fs=44100):
+_SAMPLE_RATE = 44100
+
+
+def record_short_piece(seconds: float, fs: int = _SAMPLE_RATE) -> np.ndarray:
     piece = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
     sd.wait()
     return piece
 
 
-def record_long_piece(seconds, fs=44100):
+def record_long_piece(seconds: float, fs: int = _SAMPLE_RATE) -> np.ndarray:
     piece = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
     return piece
 
 
-def write_piece(piece, filename, fs=44100):
+def write_piece(piece: np.ndarray, filename: str, fs: int = _SAMPLE_RATE) -> None:
     write(filename, fs, piece)
 
 
-def save_short_piece(piece, filename):
+def save_short_piece(piece: np.ndarray, filename: str) -> None:
     piece.dump(filename)
 
 
-def extract_pieces(piece, event_times, fs=44100):
+def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE) -> np.ndarray:
     # Stop the recording
     sd.stop()
-    # print(event_times)
+    log_debug("Recorded events: %s" % (str(event_times)))
+    # Cut and concatenate the pieces according to the pause, resume events
     pieces = []
     prev_sec = 0
     paused = False
     for event, sec in event_times:
         if event == "pause":
             short_piece = piece[int(prev_sec*fs):int(sec*fs), :]
-            print("Get a piece between %f and %f" % (prev_sec, sec))
+            log_debug("Get a piece between %f and %f" % (prev_sec, sec))
             pieces.append(short_piece)
             paused = True
         elif event == "resume":
@@ -45,9 +50,7 @@ def extract_pieces(piece, event_times, fs=44100):
             paused = False
         elif event == "end" and not paused:
             short_piece = piece[int(prev_sec*fs):int(sec*fs), :]
-            print("Get a piece between %f and %f" % (prev_sec, sec))
+            log_debug("Get a piece between %f and %f" % (prev_sec, sec))
             pieces.append(short_piece)
-
     large_piece = np.vstack(pieces)
-    # print(large_piece.shape)
     return large_piece
