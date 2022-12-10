@@ -3,7 +3,7 @@ import time
 import enum
 
 from pitch_detection import pitch_detection, write_pitch, pitch_detection_multi_channel
-from recording import record_long_piece, extract_pieces, write_piece
+from recording import record_long_piece, extract_pieces, write_piece, _SAMPLE_RATE
 from controller import start_pressed, pause_pressed, end_pressed, quit_pressed, beat_pressed
 from controller import beat_pressed
 from logger import log_info, log_warning, log_debug
@@ -31,7 +31,7 @@ long_seconds = 600
 # This is the piece counter
 melody_count = 0
 # This is the sample rate
-sample_rate = 44100
+sample_rate = _SAMPLE_RATE
 # This is the status of the recording program
 status = STATUS.END_PRESSED
 while True:
@@ -44,14 +44,14 @@ while True:
         # Start a long recording process in the background
         start_time = time.time()
         piece = record_long_piece(long_seconds)
+        paused = False
+        event_secs = [("start", 0)]
+        beat_secs = [0]
         status = STATUS.START_PRESSED
     if status != STATUS.START_PRESSED:
         continue
 
     # Started mode, it can either pause, resume, or quit
-    paused = False
-    event_secs = [("start", 0)]
-    beat_secs = [0]
     while status == STATUS.START_PRESSED:
         if quit_pressed():
             log_info("Quit the entire program")
@@ -94,12 +94,12 @@ while True:
         final_piece = extract_pieces(piece, event_secs)
         write_piece(final_piece, "melody_%d.wav" % (melody_count))
 
-        try:
-            # Pitch detection should be invoked here
-            beat_itv_length = len(beat_secs) - 1
-            beat_itv =  sum(beat_secs) / beat_itv_length
-        except ZeroDivisionError:
-            log_warning("No beat detected")
+        beat_itv_length = len(beat_secs) - 1
+        if beat_itv_length < 1:
+            log_warning("No beat recorded, aborted")
+            continue
+        
+        beat_itv =  sum(beat_secs) / beat_itv_length
         
         log_info("Start creating the music notation")
         print("Length of the Final Piece: %d" %len(final_piece))

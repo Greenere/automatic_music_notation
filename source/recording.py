@@ -5,6 +5,7 @@ Functions related to sound recording:
 
 import sounddevice as sd
 import numpy as np
+import librosa
 from scipy.io.wavfile import write
 
 from logger import log_debug
@@ -30,6 +31,8 @@ def write_piece(piece: np.ndarray, filename: str, fs: int = _SAMPLE_RATE) -> Non
 def save_short_piece(piece: np.ndarray, filename: str) -> None:
     piece.dump(filename)
 
+def preprocessing(piece: np.ndarray) -> np.ndarray:
+    return piece[np.abs(piece) > 0.05]
 
 def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE) -> np.ndarray:
     # Stop the recording
@@ -53,4 +56,5 @@ def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE)
             log_debug("Get a piece between %f and %f" % (prev_sec, sec))
             pieces.append(short_piece)
     large_piece = np.vstack(pieces)
+    large_piece = preprocessing(large_piece)
     return large_piece
