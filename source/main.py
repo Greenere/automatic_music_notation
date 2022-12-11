@@ -2,12 +2,12 @@ import numpy as np
 import time
 import enum
 
-from pitch_detection import pitch_detection, write_pitch, pitch_detection_multi_channel
+from pitch_detection import pitch_detection, write_pitch, pitch_detection_multi_channel, pitch_duration_detection, within_the_range, clef_detection
 from recording import record_long_piece, extract_pieces, write_piece, _SAMPLE_RATE
 from controller import start_pressed, pause_pressed, end_pressed, quit_pressed, beat_pressed
 from controller import beat_pressed
 from logger import log_info, log_warning, log_debug
-from notation import generate_lilypond_source_file, generate_music_notation
+from notation import compose_pitches, write_music
 
 ####### Recording ########
 """
@@ -86,34 +86,47 @@ while True:
             paused = False
 
         if beat_pressed():
-            beat_secs.append(time.time() - start_time - beat_secs[-1])
+            beat_secs.append(time.time() - start_time)
 
     if status == STATUS.END_PRESSED:
-        log_debug("Recorded beats: %s"%(str(beat_secs)))
-        event_secs.append(("end", end_time - start_time))
-        final_piece = extract_pieces(piece, event_secs)
-        write_piece(final_piece, "melody_%d.wav" % (melody_count))
-
         beat_itv_length = len(beat_secs) - 1
         if beat_itv_length < 1:
             log_warning("No beat recorded, aborted")
             continue
-        
-        beat_itv =  sum(beat_secs) / beat_itv_length
+
+        log_debug("Recorded beats: %s"%(str(beat_secs)))
+        event_secs.append(("end", end_time - start_time))
+        final_piece = extract_pieces(piece, event_secs)
+        log_debug("Length of the Final Piece: %d" %len(final_piece))
+
+        write_piece(final_piece, "melody_%d.wav" % (melody_count))
+
+        beat_itvs = []
+        for i in range(beat_itv_length):
+            beat_itvs.append(beat_secs[i+1] - beat_secs[i])
+
+        beat_itv =  sum(beat_itvs) / beat_itv_length
+        log_debug("Beat length: %f s"%(beat_itv))
+
+        event_secs[0] = ('start', beat_secs[1] - beat_itv/2)
         
         log_info("Start creating the music notation")
-        print("Length of the Final Piece: %d" %len(final_piece))
 
         pitches = pitch_detection("melody_%d.wav" % (melody_count), beat_itv, sample_rate)
-        print("Length of beat intervals %d" %beat_itv_length)
-        print("Length of pitches %d" %len(pitches))
+        log_debug("Length of beat intervals %d" %beat_itv_length)
+        log_debug("Length of pitches %d" %len(pitches))
         log_debug("Detected pitches: %s"%(str(pitches)))
+
         write_pitch(pitches, "pitches_%d" % (melody_count))
 
-        # Output to notation
-        generate_lilypond_source_file(pitches, "melody_%d.wav" % (melody_count))
-        #generate_music_notation("melody_%d.wav" % (melody_count))
+        pitches, durations = pitch_duration_detection(4, pitches)
+        log_debug("Durations: %s"%(str(durations)))
+        clef = clef_detection(pitches)
 
+        # Output to notation
+        stream = compose_pitches(clef, pitches, durations)
+        write_music(stream, "melody_%d"%(melody_count))
+        
         melody_count += 1
         event_secs = []
         beat_secs = []

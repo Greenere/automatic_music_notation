@@ -15,7 +15,14 @@ _CLEF = {
 }
 
 def pitchify(name:str, duration:float) -> music21.note.Note:
-    return music21.note.Note(name, quarterLength=duration)
+    if name == "R":
+        return music21.note.Rest(length=duration)
+    return music21.note.Note(name, quarterLength=duration*4)
+
+def pitch_name_preprocess(name:str) -> str:
+    name = name.replace("♯","#")
+    name = name.replace("♭","-")
+    return name
 
 def compose_pitches(clef:str, pitches:list, durations:list, meter: str = '4/4') -> music21.stream.Stream:
     stream = music21.stream.Stream()
@@ -26,9 +33,11 @@ def compose_pitches(clef:str, pitches:list, durations:list, meter: str = '4/4') 
         if type(pitch) == list:
             pitch_list = []
             for p in pitch:
+                p = pitch_name_preprocess(p)
                 pitch_list.append(pitchify(p, duration))
             noted = music21.chord.Chord(pitch_list)
         else:
+            pitch = pitch_name_preprocess(pitch)
             noted = pitchify(pitch, duration)
         stream.append(noted)
     return stream
