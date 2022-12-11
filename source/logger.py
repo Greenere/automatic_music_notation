@@ -4,7 +4,8 @@ import logging.handlers
 log = logging.getLogger('music_notation')
 log.setLevel(logging.DEBUG)
 
-handler = logging.handlers.RotatingFileHandler('music.log', maxBytes=4*1024, backupCount=3)
+logfile = "./logs/music.log"
+handler = logging.handlers.RotatingFileHandler(logfile, maxBytes=4*1024, backupCount=3)
 formatter = logging.Formatter('%(asctime)s-%(levelname)s:%(message)s')
 handler.setFormatter(formatter)
 

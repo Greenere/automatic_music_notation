@@ -31,13 +31,13 @@ def write_piece(piece: np.ndarray, filename: str, fs: int = _SAMPLE_RATE) -> Non
 def save_short_piece(piece: np.ndarray, filename: str) -> None:
     piece.dump(filename)
 
-def preprocessing(piece: np.ndarray, fs: int = _SAMPLE_RATE) -> np.ndarray:
-    return piece
-
 def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE) -> np.ndarray:
     # Stop the recording
     sd.stop()
     log_debug("Recorded events: %s" % (str(event_times)))
+    if event_times[0][0] != 'start':
+        log_debug("Event logs are corrupted")
+        exit(1)
     # Cut and concatenate the pieces according to the pause, resume events
     pieces = []
     prev_sec = event_times[0][1]
@@ -56,5 +56,4 @@ def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE)
             log_debug("Get a piece between %f and %f" % (prev_sec, sec))
             pieces.append(short_piece)
     large_piece = np.vstack(pieces)
-    large_piece = preprocessing(large_piece, fs)
     return large_piece

@@ -1,5 +1,81 @@
 <!DOCTYPE html>
 <html>
-    <head>TEST</head>
-    <body>TEST</body>
+    <head>
+        <title>MUSIC NOTATION</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>SEND TO YOUR EMAIL</h1>
+        <input type="text" id="email"></input>
+        <input type="submit" value="Submit" onmousedown="submit_email()">
+        <h1>BEAT & RECORDING</h1>
+        <div id="recording"></div>
+        <h1>NOTATION</h1>
+        <div id="notation"></div>
+        <script>
+            function requestData(reqs,messageHandler,errorHandler){
+                var host='10.49.53.185';
+                var port='8880';
+                $.ajax({
+                    type : "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    url : "http://"+host+":"+port+"/data",
+                    data : {"request":JSON.stringify(reqs)},
+                    success :function(result){
+                        messageHandler(result);
+                    },
+                    error : function(e){
+                        errorHandler();
+                    }
+                });
+            }
+
+            function update_notation(m){
+                document.getElementById("notation").appendChild(m.childNodes[0]);
+            }
+
+            function update_recording(m){
+                document.getElementById("recording").appendChild(m.childNodes[0]);
+            }
+
+            function periodic_request_notation(){
+                request = {
+                    "type":"notation"
+                }
+                requestData(request, update_notation, (e)=>{})
+            }
+
+            function periodic_request_recording(){
+                request = {
+                    "type":"recording"
+                }
+                requestData(request, update_recording, (e)=>{})
+            }
+
+            function submit_email(){
+                email_address = document.getElementById("email").value;
+                if (!validateEmail(email_address)){
+                    alert("Please enter a valid email address!");
+                    return;
+                }
+                request = {
+                    "type":"email",
+                    "address":email_address
+                }
+                requestData(request, (m)=>{}, (e)=>{})
+            }
+
+            const validateEmail = (email) => {
+                 return String(email)
+                 .toLowerCase()
+                 .match(
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                 );
+            };
+
+            periodic_request_notation()
+
+        </script>
+    </body>
 </html>

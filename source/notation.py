@@ -46,23 +46,15 @@ def write_music(stream: music21.stream.Stream, filename:str)->None:
     stream.write("lilypond", fp = "%s.ly"%filename)
     stream.write("midi", fp="%s.mid"%filename)
 
-def generate_lilypond_source_file(pitches: List[str], filename:str) -> None:
-    stream = music21.stream.Stream()
-    for pitch in pitches:
-        pitch = pitch.replace("♯","#")
-        pitch = pitch.replace("♭","-")
-        note = music21.note.Note(pitch)
-        stream.append(note)
-    stream.write("lilypond", fp = "%s.ly"%filename)
-    stream.write("midi", fp="%s.mid"%filename)
-
-def generate_music_notation(filename:str) -> None:
-    os.system("sudo lilypond -dbackend=svg %s.ly"%(filename))
+def export_music(stream: music21.stream.Stream, filename:str)-> None:
+    converter = music21.lily.translate.LilypondConverter()
+    converter.loadFromMusic21Object(stream)
+    converter.createSVG("%s"%(filename))
 
 if __name__ == "__main__":
     pitches = [['C4','D4'],'C4','C4','C4']
     # music21 uses 1 to mark quarter note...
     durations = [1, 1, 1, 1]
     stream = compose_pitches('treble', pitches, durations)
-    write_music(stream, "notation_test")
-    generate_music_notation("notation_test")
+    #write_music(stream, "notation_test")
+    export_music(stream, "./results/ntest")

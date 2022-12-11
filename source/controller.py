@@ -9,7 +9,7 @@ _END = 23
 _QUIT = 27
 _WIDTH = 320
 _HEIGHT = 240
-_IMAGE_PATH = "source/Music-notes-symbols-clip-art-free-clipart-images-2.jpg"
+_IMAGE_PATH = "source/music_symbol.jpg"
 _SIZE = 100
 _RED = (255, 0, 0)
 _BLACK = (0, 0, 0)
@@ -111,5 +111,3 @@ def beat_pressed() -> bool:
 # if beat is pressed, do recording
 def beat_recording() -> float:
     return time.time()
-
-beat_pressed()
