@@ -1,16 +1,13 @@
-import numpy as np
 import time
 import enum
 
-from pitch_detection import pitch_detection, write_pitch, pitch_detection_multi_channel, pitch_duration_detection, within_the_range, clef_detection
-from recording import record_long_piece, extract_pieces, write_piece, _SAMPLE_RATE
 from controller import start_pressed, pause_pressed, end_pressed, quit_pressed, beat_pressed
-from controller import beat_pressed
+from exchange import leave_message
 from logger import log_info, log_warning, log_debug
 from notation import compose_pitches, write_music, export_music
-
-from exchange import leave_message
-from pitch_detection import wave_plot
+from pitch_detection import pitch_detection, write_pitch
+from pitch_detection import pitch_duration_detection, clef_detection,wave_plot
+from recording import record_long_piece, extract_pieces, write_piece, _SAMPLE_RATE
 
 ####### Recording ########
 """
@@ -30,6 +27,8 @@ _RESUlT_PATH = "./results"
 def name2path(filename: str) -> str:
     return "%s/%s"%(_RESUlT_PATH, filename)
 
+# The length of the visualized period
+vis_sec = 2
 # Assuming one beat is a quarter length
 beat_base = 4
 # This is the maximal length of a recording
@@ -50,25 +49,25 @@ while True:
         log_info("Start recording...")
         # Start a long recording process in the background
         start_time = time.time()
+        last_time = start_time
         piece = record_long_piece(long_seconds)
         # Set the initial states
         paused = False
         event_secs = [("start", 0)]
         beat_secs = [0]
         status = STATUS.START_PRESSED
-        # Leave messages for the server
-        leave_message("melody", "")
-        leave_message("recording","")
     if status != STATUS.START_PRESSED:
         continue
 
     # Started mode, it can either pause, resume, or quit
     while status == STATUS.START_PRESSED:
         cur_time = time.time()
-        if (cur_time - start_time) % 2 < 0.05 and cur_time > 2:
-            wave_plot(piece, cur_time - start_time - 2, sample_rate, beat_secs, 2)
-            leave_message("recording", "spectral")
-
+        if (cur_time - last_time) > vis_sec:
+            if (cur_time - start_time) < vis_sec:
+                wave_plot(piece, start_time, sample_rate, beat_secs, cur_time - start_time)
+            else:
+                wave_plot(piece, cur_time - start_time - vis_sec, sample_rate, beat_secs, vis_sec)
+            last_time = cur_time
         if quit_pressed():
             log_info("Quit the entire program")
             exit(0)
@@ -109,15 +108,18 @@ while True:
         log_debug("Recorded beats: %s"%(str(beat_secs)))
         beat_itv_length = len(beat_secs) - 1
         if beat_itv_length < 1:
-            log_warning("No beat recorded, aborted")
-            continue
-        beat_itvs = []
-        for i in range(beat_itv_length):
-            beat_itvs.append(beat_secs[i+1] - beat_secs[i])
+            log_warning("No beat recorded, using 0.5s as default")
+            beat_itv_length = int((end_time - start_time)*2)
+            beat_itvs = [0.5]*beat_itv_length
+            beat_secs.append(0.5)
+        else:
+            beat_itvs = []
+            for i in range(beat_itv_length):
+                beat_itvs.append(beat_secs[i+1] - beat_secs[i])
 
         # Align the events with beats
         event_secs[0] = ('start', beat_secs[1] - beat_itvs[0]/2)
-        event_secs.append(("end", time.time() - start_time))
+        event_secs.append(("end", end_time - start_time))
         # Cut and concatenate the recordings according to events
         final_piece = extract_pieces(piece, event_secs)
         log_debug("Length of the Final Piece: %d" %len(final_piece))
@@ -148,13 +150,9 @@ while True:
         write_music(stream, name2path("melody_%d"%(melody_count)))
         export_music(stream, "melody_%d"%(melody_count))
 
-        leave_message("melody", "melody_%d"%(melody_count))
+        # Plot the last piece of wave
+        wave_plot(piece, end_time - start_time - vis_sec, sample_rate, beat_secs, vis_sec)
 
-        melody_count += 1
+        leave_message("update", 2)
 
-
-####### Interaction with Pi ########
-# Button1: start recording
-# Button2: pause / continue
-# Button3: end
-# Button4: quit
+        #melody_count += 1

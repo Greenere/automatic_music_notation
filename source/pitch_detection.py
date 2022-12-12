@@ -3,15 +3,13 @@ Functions related to pitch detection.
 """
 import librosa
 import matplotlib.pyplot as plt
-import numpy as np
 import statsmodels.api as sm
 from scipy.signal import find_peaks
 from typing import List
-import math
 
 from logger import log_debug
 
-_NLAGS = 22050#3000
+_NLAGS = 22050
 # Single Pitch Detection
 # data: Slicing data according to beats
 # sample_rate: self-explanatory
@@ -25,22 +23,20 @@ def single_pitch_detection(data: List[int], sample_rate: int) -> str:
     treble_clef_freq_max = librosa.note_to_hz("C6")
 
     auto_correlation_function = sm.tsa.acf(data[:N], nlags=_NLAGS)
-    print("Auto Correction function: %s" %str(auto_correlation_function))
+    #print("Auto Correction function: %s" %str(auto_correlation_function))
     peaks = find_peaks(auto_correlation_function)[0]  # Find peaks of the autocorrelation
-    print("Peaks: %s" %str(peaks))
+    #print("Peaks: %s" %str(peaks))
     if len(peaks) > 0:
         lag = peaks[0]  # Choose the first peak as our pitch component lag
     else:
         return 'R'
 
     pitch_freq = sample_rate / (3 * lag)  # Transform lag into frequency
-    print("Pitch Frequency: %s hz"%(str(pitch_freq)))
+    #print("Pitch Frequency: %s hz"%(str(pitch_freq)))
     pitch_note = 'R'
     if pitch_freq <= treble_clef_freq_max and pitch_freq >= bass_clef_freq_min:
         pitch_note = librosa.hz_to_note(pitch_freq*2)
 
-    # pitch_freq = librosa.yin(y=data, frame_length=N, win_length=N-1, sr=sample_rate, fmin=65, fmax=2093)
-    # pitch_note = librosa.hz_to_note(pitch_freq)
     log_debug("Note: %s" %pitch_note)
     return pitch_note
 
@@ -161,14 +157,19 @@ def clef_detection(pitches: list[str]):
 def wave_plot(data: int, start_time: float, sample_rate: int, beats: List[int], time_duration=5):
     start_ptr = int(start_time * sample_rate)
     end_ptr = int((start_time + time_duration) * sample_rate)
-    sample_itv_plot = 100
+    sample_itv_plot = sample_rate//400
     data_plot = data[start_ptr:end_ptr:sample_itv_plot]
     data_plot_len = len(data_plot)
     beats_plot = []
-    for beat in beats:
+    j = len(beats) - 1
+    while j >= 0:
+        beat = beats[j]
         if beat >= start_time and beat <= start_time + time_duration:
             beats_plot.append(beat)
-        
+        if beat < start_time:
+            break
+        j -= 1
+
     time_plot = [(start_time + time * time_duration / data_plot_len) for time in range(data_plot_len)]
     fig, ax = plt.subplots()
     ax.plot(time_plot, data_plot, 'k', linewidth=2)

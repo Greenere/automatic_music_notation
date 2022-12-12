@@ -1,3 +1,8 @@
+"""
+The original plan was to have the musical notation sent via the email
+but somehow, the SMTP is blocked in the campus network and we never 
+get it work
+"""
 import smtplib
 import email.mime.multipart
 import email.message
@@ -42,11 +47,12 @@ def create_email_object(to_address, appendage_path):
     return fullmessage
 
 def send_email_object_SMTP(from_address, password, to_address, email_object):
-    mail_host='smtp.'+from_address.split('@')[-1]
+    mail_host='smtp.mail'+from_address.split('@')[-1]
 
     try:
         smtpObj = smtplib.SMTP_SSL(mail_host, 465)
         smtpObj.login(from_address, password)
+        print("Log-in")
         smtpObj.sendmail(from_address, to_address, email_object.as_string())
         smtpObj.close()
         log_info("Send an email to %s" % (to_address))
