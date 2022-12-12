@@ -1,6 +1,6 @@
 import json
 
-_NAME = "exc.json"
+_NAME = "./source/exc.json"
 
 def leave_message(key, value):
     with open(_NAME, "r") as f:

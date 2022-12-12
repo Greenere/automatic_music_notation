@@ -19,15 +19,16 @@ def dataServe():
         if melody == "":
             return ""
         resp = None
-        with open("../%s.svg"%(melody), "r") as f:
+        with open("./%s.svg"%(melody), "r") as f:
             resp = f.read()
         return resp
     elif reqs['type'] == 'recording':
         recording = read_message("recording")
+        print(recording)
         if recording == "":
             return ""
         resp = None
-        with open("../%s.svg"%(recording), "r") as f:
+        with open("./%s.svg"%(recording), "r") as f:
             resp = f.read()
         return resp
     elif reqs['type'] == 'email':

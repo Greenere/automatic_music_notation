@@ -36,7 +36,7 @@
             }
 
             function update_recording(m){
-                document.getElementById("recording").appendChild(m.childNodes[0]);
+                document.getElementById("recording").innerHTML = m;
             }
 
             function periodic_request_notation(){
@@ -55,7 +55,7 @@
 
             function submit_email(){
                 email_address = document.getElementById("email").value;
-                if (!validateEmail(email_address)){
+                if (!validate_email_address(email_address)){
                     alert("Please enter a valid email address!");
                     return;
                 }
@@ -66,15 +66,16 @@
                 requestData(request, (m)=>{}, (e)=>{})
             }
 
-            const validateEmail = (email) => {
-                 return String(email)
+            const validate_email_address = (email_address) => {
+                 return String(email_address)
                  .toLowerCase()
                  .match(
                   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                  );
             };
 
-            periodic_request_notation()
+            setInterval(periodic_request_notation, 1);
+            setInterval(periodic_request_recording, 1);
 
         </script>
     </body>

@@ -10,6 +10,7 @@ from logger import log_info, log_warning, log_debug
 from notation import compose_pitches, write_music, export_music
 
 from exchange import leave_message
+from pitch_detection import wave_plot
 
 ####### Recording ########
 """
@@ -63,6 +64,11 @@ while True:
 
     # Started mode, it can either pause, resume, or quit
     while status == STATUS.START_PRESSED:
+        cur_time = time.time()
+        if (cur_time - start_time) % 2 < 0.05 and cur_time > 2:
+            wave_plot(piece, cur_time - start_time - 2, sample_rate, beat_secs, 2)
+            leave_message("recording", "spectral")
+
         if quit_pressed():
             log_info("Quit the entire program")
             exit(0)

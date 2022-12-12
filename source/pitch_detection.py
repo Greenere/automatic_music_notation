@@ -171,13 +171,14 @@ def wave_plot(data: int, start_time: float, sample_rate: int, beats: List[int], 
         
     time_plot = [(start_time + time * time_duration / data_plot_len) for time in range(data_plot_len)]
     fig, ax = plt.subplots()
-    ax.plot(time_plot, data_plot, 'k', linewidth=3)
-    plt.axvline(beats_plot, color='r', label = 'axvline - full height')
-    ax.set(title="Soundwave")
-    ax.label_outer()
-    fig.set_figwidth(40)
-    fig.set_figheight(10)
-    fig.savefig("spectral.png")
+    ax.plot(time_plot, data_plot, 'k', linewidth=2)
+    for beat in beats_plot:
+        plt.axvline(beat, color='r', label = 'axvline - full height', linewidth = 3)
+    fig.set_figwidth(12)
+    fig.set_figheight(3)
+    plt.grid(False)
+    plt.axis('off')
+    fig.savefig("spectral.svg", format='svg')
     plt.close(fig=fig)
 
 if __name__ == "__main__":

@@ -8,7 +8,6 @@ logfile = "./logs/music.log"
 handler = logging.handlers.RotatingFileHandler(logfile, maxBytes=4*1024, backupCount=3)
 formatter = logging.Formatter('%(asctime)s-%(levelname)s:%(message)s')
 handler.setFormatter(formatter)
-
 log.addHandler(handler)
 
 def log_info(info):
