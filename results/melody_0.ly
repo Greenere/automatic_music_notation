@@ -10,27 +10,52 @@ color = #(define-music-function (parser location color) (string?) #{
     
 \header { } 
 \score  { 
- \new Voice { \new Voice { \clef "alto" 
+ \new Voice { \new Voice { \clef "treble" 
                 \time 4/4
-                g 4  
-                fis'' 4  
-                d 4  
-                cis' 4  
-                dis' 4  
+                cis''' 4  
                 c' 4  
-                dis' 4  
-                f 4  
-                cis 4  
-                r 8  
-                d 4  
-                d 4  
-                r 16  
                 d' 4  
-                c 4  
-                gis 4  
-                r 8.  
+                dis' 4  
+                f' 4  
+                e' 4  
+                d' 4  
+                cis' 4  
+                a' 4  
+                cis''' 4  
+                g' 4  
+                f' 4  
+                dis'' 4  
+                cis''' 4  
+                b'' 4  
+                dis''' 4  
+                d' 4  
+                dis' 4  
+                f' 4  
+                e' 4  
+                d' 4  
+                c' 4  
+                ais 4  
+                cis''' 4  
+                b'' 4  
+                f' 4  
+                dis'' 4  
+                cis''' 4  
+                b'' 4  
+                c' 4  
+                d' 4  
+                e' 4  
+                f' 4  
+                e' 4  
+                d' 4  
+                c' 4  
+                ais' 4  
+                cis''' 4  
+                c''' 4  
+                f' 4  
+                f' 2  
+                fis' 4  
                 r 16  
-                d''' 4  
+                r 8  
                  } 
                
  

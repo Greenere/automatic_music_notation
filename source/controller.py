@@ -12,7 +12,6 @@ _HEIGHT = 240
 _IMAGE_PATH = "source/music_symbol.jpg"
 _SIZE = 100
 _RED = (255, 0, 0)
-_BLACK = (0, 0, 0)
 _WHITE = (255, 255, 255)
 
 os.putenv('SDL_VIDEODRIVER', 'fbcon') # Display on piTFT 
@@ -108,6 +107,3 @@ def beat_pressed() -> bool:
 
     return is_pressed
 
-# if beat is pressed, do recording
-def beat_recording() -> float:
-    return time.time()
