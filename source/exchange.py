@@ -1,3 +1,8 @@
+"""
+A simple exchange package that uses a json file
+to allow two proceses exchange information
+"""
+
 import json
 
 _NAME = "./source/exc.json"

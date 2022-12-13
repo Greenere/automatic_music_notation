@@ -1,5 +1,13 @@
+"""
+A simple server designed to cast a "virtual printer"
+- Serve the index page
+- Serve the requested data
+"""
+
 import json
 from flask import Flask, request, jsonify, send_file
+from gevent.pywsgi import WSGIServer
+from gevent import monkey
 
 from exchange import read_message, leave_message
 
@@ -45,10 +53,6 @@ def dataServe():
         if recorded == "":
             return jsonify({"name":""})
         return jsonify({"name":"%s.wav"%(str(recorded))})
-    elif reqs['type'] == 'email':
-        email_address = reqs['address']
-        print(email_address)
-        return ""
     elif reqs['type'] == 'ping':
         updated = read_message("update")
         if updated == 1:
@@ -60,12 +64,9 @@ def dataServe():
             return jsonify({"update":-1})
     return ""
 
-
-from gevent.pywsgi import WSGIServer
-from gevent import monkey
-monkey.patch_all()
-
 if __name__ == '__main__':
+    monkey.patch_all()
+
     host: str = '10.49.53.185'
     port: int = 8880
 

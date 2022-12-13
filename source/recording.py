@@ -5,18 +5,11 @@ Functions related to sound recording:
 
 import sounddevice as sd
 import numpy as np
-import noisereduce as nr
 from scipy.io.wavfile import write
 
 from logger import log_debug
 
 _SAMPLE_RATE = 44100
-
-
-def record_short_piece(seconds: float, fs: int = _SAMPLE_RATE) -> np.ndarray:
-    piece = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
-    sd.wait()
-    return piece
 
 
 def record_long_piece(seconds: float, fs: int = _SAMPLE_RATE) -> np.ndarray:
@@ -27,9 +20,6 @@ def record_long_piece(seconds: float, fs: int = _SAMPLE_RATE) -> np.ndarray:
 def write_piece(piece: np.ndarray, filename: str, fs: int = _SAMPLE_RATE) -> None:
     write(filename, fs, piece)
 
-
-def save_short_piece(piece: np.ndarray, filename: str) -> None:
-    piece.dump(filename)
 
 def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE) -> np.ndarray:
     # Stop the recording

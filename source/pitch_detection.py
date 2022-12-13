@@ -1,62 +1,69 @@
 """
-Functions related to pitch detection.
+Functions related to pitch detection:
+- Slice the audio into small pieces
+- Detect the pitch of each piece
+- Decide the durations and clefs
 """
+
 import librosa
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 from scipy.signal import find_peaks
-from typing import List
+from typing import List, Tuple
 
-from logger import log_debug
+_NLAGS = 5000
+_VIS_POINTS = 10000
+_SPECTRAL_NAME = "spectral"
 
-_NLAGS = 22050
-# Single Pitch Detection
-# data: Slicing data according to beats
-# sample_rate: self-explanatory
+
 def single_pitch_detection(data: List[int], sample_rate: int) -> str:
-    # load a file, get the music and the sample_rate
-    # May lead to warning: Librosa tries to use libsndfile first, 
-    # and if that fails, it will fall back on the audioread package
-    N = len(data)
-    # N = int(N / 2)
+    """
+    Single Pitch Detection
+    - data: Slicing data according to beats
+    - sample_rate: self-explanatory
+    It loads a file, get the music and the sample_rate
+    May lead to warning: Librosa tries to use libsndfile first,
+    and if that fails, it will fall back on the audioread package
+    """
+    pitch_note = 'R'
+    # The range of the allowed frequencies
     bass_clef_freq_min = librosa.note_to_hz("C2")
     treble_clef_freq_max = librosa.note_to_hz("C6")
 
-    auto_correlation_function = sm.tsa.acf(data[:N], nlags=_NLAGS)
-    #print("Auto Correction function: %s" %str(auto_correlation_function))
-    peaks = find_peaks(auto_correlation_function)[0]  # Find peaks of the autocorrelation
-    #print("Peaks: %s" %str(peaks))
+    auto_correlation_function = sm.tsa.acf(data, nlags=_NLAGS)
+    # Find peaks of the autocorrelation
+    peaks = find_peaks(auto_correlation_function)[0]
     if len(peaks) > 0:
-        lag = peaks[0]  # Choose the first peak as our pitch component lag
+        # Choose the first peak as our pitch component lag
+        lag = peaks[0]
     else:
-        return 'R'
+        return pitch_note
 
-    pitch_freq = sample_rate / (3 * lag)  # Transform lag into frequency
-    #print("Pitch Frequency: %s hz"%(str(pitch_freq)))
-    pitch_note = 'R'
+    # Transform lag into frequency
+    pitch_freq = sample_rate / lag
     if pitch_freq <= treble_clef_freq_max and pitch_freq >= bass_clef_freq_min:
-        pitch_note = librosa.hz_to_note(pitch_freq*2)
-
-    log_debug("Note: %s" %pitch_note)
+        pitch_note = librosa.hz_to_note(pitch_freq)
     return pitch_note
 
 
-# beat_itv: the average beat interval recorded on the Raspberry pi
-# file_path
-# sample_rate
-
 def pitch_detection(file_path: str, beat_itvs: list, sample_rate: int) -> list[str]:
-    data, _ = librosa.load(file_path, sr=sample_rate)   # Data acquired from the sound track
+    """
+    Detect pitches
+    - file_path: the path of the target audio file
+    - beat_itvs: beat intervals used to slice the audio
+    - sample_rate: the sample rate
+    """
+    # Data acquired from the sound track
+    data, _ = librosa.load(file_path, sr=sample_rate)
     i = 0
     start_ptr = 0   # The start of the data slicing
     N = len(data)   # The length of the data
     pitches = []    # pitches detected
 
     beat_itv = sum(beat_itvs)/len(beat_itvs)
-
     while (start_ptr <= N):
         if i < len(beat_itvs):
-            data_itv = int(beat_itvs[i] * sample_rate) 
+            data_itv = int(beat_itvs[i] * sample_rate)
         else:
             data_itv = int(beat_itv * sample_rate)
 
@@ -64,32 +71,27 @@ def pitch_detection(file_path: str, beat_itvs: list, sample_rate: int) -> list[s
         if (start_ptr + data_itv <= N):
             data_piece = data[start_ptr: start_ptr + data_itv]
             pitch = single_pitch_detection(
-                    data_piece, sample_rate
-                )
+                data_piece, sample_rate
+            )
         else:
             data_piece = data[start_ptr: N]
             pitch = single_pitch_detection(
-                    data_piece, sample_rate
-                )
-        
+                data_piece, sample_rate
+            )
+
         pitches.append(pitch)
         start_ptr += data_itv
         i += 1
-    
+
     return pitches
 
-def pitch_detection_multi_channel(file_path: str, sample_rate: int):
-    data, _ = librosa.load(file_path, sr=44100)   # Data acquired from the sound track
-    print("Length of data using by pitch detection %d" % len(data))
-    pitches, magnitudes = librosa.piptrack(y=data, sr=sample_rate, fmin=65, fmax=2093)
 
-    return pitches, magnitudes
-
-def write_pitch(pitches: List[str], file_path: str):
-    with open(file_path,"w") as fp:
+def write_pitch(pitches: List[str], file_path: str) -> None:
+    with open(file_path, "w") as fp:
         fp.write(" ".join(pitches))
 
-def pitch_duration_detection(note: int, pitches: List[str]):
+
+def pitch_duration_detection(note: int, pitches: List[str]) -> Tuple[list, list]:
     pitches_num = len(pitches)
     start_ptr = 0
     pitches_partition = []
@@ -105,7 +107,7 @@ def pitch_duration_detection(note: int, pitches: List[str]):
                 else:
                     pitches_partition.append(pitches[start_ptr + i + 1])
                     pitches_duration.append(1 / note)
-            
+
         else:
             for i in range(pitches_num - start_ptr - 1):
                 if pitches[start_ptr + i + 1] == pitches_partition[-1]:
@@ -118,10 +120,12 @@ def pitch_duration_detection(note: int, pitches: List[str]):
 
     return pitches_partition, pitches_duration
 
+
 def within_the_range(val, min, max) -> bool:
     return (val >= min and val <= max)
 
-def clef_detection(pitches: list[str]):
+
+def clef_detection(pitches: list[str]) -> str:
     treble_clef_freq_min = librosa.note_to_hz("C4")
     treble_clef_freq_max = librosa.note_to_hz("C6")
     alto_clef_freq_min = librosa.note_to_hz("C3")
@@ -136,14 +140,15 @@ def clef_detection(pitches: list[str]):
     clef = ""
 
     for pitch in pitches:
-        if pitch == 'R': continue
+        if pitch == 'R':
+            continue
         if within_the_range(librosa.note_to_hz(pitch), treble_clef_freq_min, treble_clef_freq_max):
             treble_cnt += 1
         if within_the_range(librosa.note_to_hz(pitch), alto_clef_freq_min, alto_clef_freq_max):
             alto_cnt += 1
         if within_the_range(librosa.note_to_hz(pitch), bass_clef_freq_min, bass_clef_freq_max):
             bass_cnt += 1
-    
+
     max_cnt = max(treble_cnt, alto_cnt, bass_cnt)
     if max_cnt == treble_cnt:
         clef = "treble"
@@ -154,10 +159,11 @@ def clef_detection(pitches: list[str]):
 
     return clef
 
-def wave_plot(data: int, start_time: float, sample_rate: int, beats: List[int], time_duration=5):
+
+def wave_plot(data: int, start_time: float, sample_rate: int, beats: List[int], time_duration: int = 5) -> None:
     start_ptr = int(start_time * sample_rate)
     end_ptr = int((start_time + time_duration) * sample_rate)
-    sample_itv_plot = sample_rate//400
+    sample_itv_plot = int(sample_rate*time_duration//_VIS_POINTS)
     data_plot = data[start_ptr:end_ptr:sample_itv_plot]
     data_plot_len = len(data_plot)
     beats_plot = []
@@ -170,22 +176,25 @@ def wave_plot(data: int, start_time: float, sample_rate: int, beats: List[int], 
             break
         j -= 1
 
-    time_plot = [(start_time + time * time_duration / data_plot_len) for time in range(data_plot_len)]
+    time_plot = [(start_time + time * time_duration / data_plot_len)
+                 for time in range(data_plot_len)]
     fig, ax = plt.subplots()
-    ax.plot(time_plot, data_plot, 'k', linewidth=2)
+    ax.plot(time_plot, data_plot, 'k', linewidth=1)
     for beat in beats_plot:
-        plt.axvline(beat, color='r', label = 'axvline - full height', linewidth = 3)
+        plt.axvline(beat, linestyle='--', color='r',
+                    label='axvline - full height', linewidth=2)
     fig.set_figwidth(12)
     fig.set_figheight(3)
     plt.grid(False)
     plt.axis('off')
-    fig.savefig("spectral.svg", format='svg')
+    fig.savefig("%s.svg"%(_SPECTRAL_NAME), format='svg')
     plt.close(fig=fig)
+
 
 if __name__ == "__main__":
     file_path = "/home/pi/automatic_music_notation/sound_track/C2Long.wav"
     data, _ = librosa.load(file_path, sr=22050)
-    wave_plot(data, 0, 22050, [1,2,3,4])
+    wave_plot(data, 0, 22050, [1, 2, 3, 4])
     # pitch_note = single_pitch_detection(data, 22050)
     # print(pitch_note)
     # pitches = []
@@ -201,5 +210,5 @@ if __name__ == "__main__":
     # print("pitches_partition: %s" %str(pitches_partition))
     # print("pitches_duration: %s" %str(pitches_duration))
     # print("clef: %s" %str(clef))
-    # pitch_freqs = pitch_detection(file_path, 0.5, 22050)
+    # pitch_freqs = pitch_detection(file_path, [0.5], 22050)
     # print(pitch_freqs)

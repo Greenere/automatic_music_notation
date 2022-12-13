@@ -5,28 +5,16 @@
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
         <title>MUSIC NOTATION</title>
-        <script src="https://d3js.org/d3.v7.min.js"></script>
         <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-        <style>
-            .centered{
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-            }
-        </style>
     </head>
     <body>
         <div style = "position:absolute; left:80px; top:10px">
         <h1>MUSIC NOTATION</h1>
         <p>© Haoyang Li & Yue Zhao</p>
-        <!--
-        <input type="text" id="email" placeholder="Enter your email"></input>
-        <input type="submit" value="SEND" onmousedown="submit_email()">
-        -->    
         </div>
         <div style = "position:absolute; left:80px; top:110px">
         <h1>BEAT & RECORDING</h1>
-        <div id="recording" style="border: 2px black dotted;"></div>
+        <div id="recording"></div>
         </div>
         <div style = "position: absolute; left: 420px; top:125px">
             <audio id = "recorded" controls>
@@ -91,6 +79,7 @@
                 if (m.update == 2){
                     request_notation();
                     request_audio();
+                    request_recording();
                 }
             }
 
@@ -101,29 +90,7 @@
                 requestData(request,ping_result, (e)=>{})
             }
 
-            function submit_email(){
-                email_address = document.getElementById("email").value;
-                if (!validate_email_address(email_address)){
-                    alert("Please enter a valid email address!");
-                    return;
-                }
-                request = {
-                    "type":"email",
-                    "address":email_address
-                }
-                requestData(request, (m)=>{}, (e)=>{})
-            }
-
-            const validate_email_address = (email_address) => {
-                 return String(email_address)
-                 .toLowerCase()
-                 .match(
-                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                 );
-            };
-
-            setInterval(periodic_ping, 1000);
-            setInterval(request_recording, 2000);
+            setInterval(periodic_ping, 5000);
 
         </script>
     </body>
