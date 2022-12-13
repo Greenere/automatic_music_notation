@@ -50,9 +50,11 @@
             <li><a href="#intro">Introduction</a></li>
             <li><a href="#obj">Project Objective</a></li>
             <li><a href="#design">Design</a></li>
-            <li><a href="#drawings">Drawings</a></li>
-            <li><a href="#testing">Testing</a></li>
-            <li><a href="#result">Result</a></li>
+            <li><a href="#record">Recording</a></li>
+            <li><a href="#pitch">Pitch Detection</a></li>
+            <li><a href="#note">Music Notation</a></li>
+            <li><a href="#result">Results</a></li>
+            <li><a href="#future">Future</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -76,15 +78,22 @@
 
       <div style="text-align:center;">
               <h2>Introduction</h2>
-              <p style="text-align: left;padding: 0px 30px;">
-                </p>
+              <p style="text-align: justify;padding: 0px 30px;font-size: 18px;">
+We built an automatic music notation tool. It consists of two running processes on a Raspberry Pi, 
+a program that records and generates notations and a server that presents the final results. 
+One just need to sing into the microphone attached to the Raspberry Pi and tap the beats on the touchscreen, 
+a corresponding staff notation will be generated after the end button is pressed. The recorded beats, audio and 
+corresponding staff notations are accessible through a web page hosted by the server. It also 
+allows one to pause the recording to take a break and resume it afterwards. Its accuracy is bounded 
+by the quality of recording and the faults of pitch detection algorithms, but overall, it works.
+              </p>
               </div>
 
     <hr id='obj'>
 
       <div class="row">
           <div class="col-md-4" style="text-align:center;">
-          <img class="img-rounded" src="pics/demo.png" alt="A picture of our project" width="380" height="260">
+          <img class="img-rounded" src="pics/demo_combined.png" alt="A picture of our project" width="380" height="340">
           </div>
           <div class="col-md-8" style="font-size:18px;">
           <h2>Project Objective</h2>
@@ -107,31 +116,37 @@
 
       <div style="text-align:center;">
               <h2>Design</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
       </div>
-
-    <hr id='drawings'>
+    
+      <hr id='record'>
 
       <div style="text-align:center;">
-              <h2>Drawings</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <h2>Recording</h2>
       </div>
-
-    <hr id='testing'>
+    
+    <hr id='pitch'>
 
       <div style="text-align:center;">
-              <h2>Testing</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <h2>Pitch Detection</h2>
+      </div>
+     <hr id='note'>
+
+      <div style="text-align:center;">
+              <h2>Music Notation</h2>
       </div>
 
     <hr id='result'>
 
       <div style="text-align:center;">
-              <h2>Result</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+      <h2>Results</h2>
       </div>
+    
+      <hr id='Future'>
 
-    <hr>
+      <div style="text-align:center;">
+      <h2>Future</h2>
+              
+    </div>
 
     <div class="row" style="text-align:center;">
           <h2>Work Distribution</h2>
@@ -158,20 +173,29 @@
           <h2>Parts List</h2>
           <ul>
               <li>Raspberry Pi $35.00</li>
-              <li>Raspberry Pi Camera V2 $25.00</li>
-              <a href="https://www.adafruit.com/product/1463"><li>NeoPixel Ring - $9.95</li></a>
-              <li>LEDs, Resistors and Wires - Provided in lab</li>
+              <li>MINI USB Microphone MI-305 $5.95</li>
           </ul>
-          <h3>Total: $69.95</h3>
+          <h3>Total: $40.95</h3>
       </div>
       <hr>
       <div style="font-size:18px">
           <h2>References</h2>
-          <a href="https://picamera.readthedocs.io/">PiCamera Document</a><br>
-          <a href="http://www.micropik.com/PDF/SG90Servo.pdf">Tower Pro Servo Datasheet</a><br>
-          <a href="http://getbootstrap.com/">Bootstrap</a><br>
-          <a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a><br>
-          <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
+          <ul>
+          <li><a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a></li>
+          <li><a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a></li>
+          <li><a href="https://www.pygame.org/">Pygame Library</a></li>
+          <li><a href="https://numpy.org/">Numpy Library</a></li>
+          <li><a href="https://scipy.org/">Scipy Library</a></li>
+          <li><a href="https://matplotlib.org/">Matplotlib Library</a></li>
+          <li><a href="https://librosa.org/">Librosa Library</a></li>
+          <li><a href="https://www.statsmodels.org/">Statsmodels Library</a></li>
+          <li><a href="https://python-sounddevice.readthedocs.io/">Sounddevice Library</a></li>
+          <li><a href="http://web.mit.edu/music21/">Music21 Library</a></li>
+          <li><a href="https://flask.palletsprojects.com/en/2.2.x/">Flask Library</a></li>
+          <li><a href="https://www.gevent.org/">Gevent Library</a></li>
+          <li><a href="https://jquery.com/">JQuery Library</a></li>
+          <li><a href="http://lilypond.org/">Lilypond</a></li>
+          </ul>
 
       </div>
 
@@ -179,12 +203,675 @@
 
       <div class="row">
               <h2>Code Appendix</h2>
-              <pre><code>
-// Hello World.c
-int main(){
-  printf("Hello World.\n");
+<pre><code>
+  # main.py
+  import time
+  import enum
+  
+  from controller import start_pressed, pause_pressed, end_pressed, quit_pressed, beat_pressed
+  from exchange import leave_message
+  from logger import log_info, log_warning, log_debug
+  from notation import compose_pitches, write_music, export_music
+  from pitch_detection import pitch_detection, write_pitch
+  from pitch_detection import pitch_duration_detection, clef_detection,wave_plot
+  from recording import record_long_piece, extract_pieces, write_piece, _SAMPLE_RATE
+  
+  # We use status flags to indicate the states of the recording
+  class STATUS(enum.Enum):
+      START_PRESSED = 1
+      PAUSE_PRESSED = 2
+      END_PRESSED = 3
+  
+  # The directory that holds the results
+  _RESUlT_PATH = "./results"
+  def name2path(filename: str) -> str:
+      return "%s/%s"%(_RESUlT_PATH, filename)
+  
+  # Assuming one beat is a quarter length
+  beat_base = 4
+  # This is the maximal length of a recording
+  long_seconds = 600
+  # This is the piece counter
+  melody_count = 0
+  # This is the sample rate
+  sample_rate = _SAMPLE_RATE
+  # This is the status of the recording program
+  status = STATUS.END_PRESSED
+  log_info("Start the program, sample_rate: %d /s, max recording: %d s"%(sample_rate, long_seconds))
+  while True:
+      # Idle mode, it can either start or quit
+      if quit_pressed():
+          log_info("Quit the entire program")
+          exit(0)
+      if start_pressed():
+          log_info("Start recording...")
+          # Start a long recording process in the background
+          start_time = time.time()
+          last_time = start_time
+          piece = record_long_piece(long_seconds)
+          # Set the initial states
+          paused = False
+          paused_period = 0
+          event_secs = [("start", 0)]
+          beat_secs = []
+          beats = []
+          status = STATUS.START_PRESSED
+      if status != STATUS.START_PRESSED:
+          continue
+  
+      # Started mode, it can either pause, resume, or quit
+      while status == STATUS.START_PRESSED:
+          if quit_pressed():
+              log_info("Quit the entire program")
+              exit(0)
+  
+          if end_pressed():
+              end_time = time.time()
+              log_info("End the recording after %f seconds" %
+                    (end_time - start_time))
+              status = STATUS.END_PRESSED
+  
+          # Time out equals to an end_pressed()
+          if time.time() - start_time >= long_seconds:
+              end_time = time.time()
+              log_info("End the recording due to time out (%f seconds)" %
+                    (end_time - start_time))
+              status = STATUS.END_PRESSED
+  
+          # The `paused` is used to debounce the buttons
+          if pause_pressed() and not paused:
+              pause_time = time.time()
+              log_info("Pause the recording after %f seconds" %
+                    (pause_time - start_time))
+              event_secs.append(("pause", pause_time-start_time))
+              paused = True
+  
+          if start_pressed() and paused:
+              resume_time = time.time()
+              log_info("Resume the recording after %f seconds" %
+                    (resume_time - start_time))
+              event_secs.append(("resume", resume_time-start_time))
+              paused = False
+              paused_period += resume_time - pause_time
+  
+          if beat_pressed() and not paused:
+              beat_time = time.time()
+              beat_secs.append(beat_time - start_time)
+              beats.append(beat_time - start_time - paused_period)
+  
+      if status == STATUS.END_PRESSED:
+          # Extract beat, and beat durations
+          log_debug("Recorded beats: %s"%(str(beats)))
+          beat_itv_length = len(beats) - 1
+          if beat_itv_length < 1:
+              log_warning("No beat recorded, using 0.5s as default")
+              beat_itv_length = int((end_time - start_time)*2)
+              beat_itvs = [0.5]*beat_itv_length
+              beats.append(0.5)
+          else:
+              beat_itvs = []
+              for i in range(beat_itv_length):
+                  beat_itvs.append(beats[i+1] - beats[i])
+  
+          # Align the events with beats
+          event_secs[0] = ('start', beats[0] - beat_itvs[0]/2)
+          event_secs.append(("end", end_time - start_time))
+          # Cut and concatenate the recordings according to events
+          final_piece = extract_pieces(piece, event_secs)
+          log_debug("Length of the Final Piece: %d" %len(final_piece))
+          # Save the recording
+          write_piece(final_piece, name2path("melody_%d.wav" % (melody_count)))
+          
+          log_info("Start creating the music notation")
+  
+          # Extract the raw pitches
+          try:
+              pitches = pitch_detection(name2path("melody_%d.wav" % (melody_count)), beat_itvs, sample_rate)
+              log_debug("Length of beat intervals %d" %beat_itv_length)
+              log_debug("Length of pitches %d" %len(pitches))
+              log_debug("Detected pitches: %s"%(str(pitches)))
+              # Save the extracted pitches
+              write_pitch(pitches, name2path("pitches_%d" % (melody_count)))
+          except:
+              log_warning("Pitch detection failed, likely the recorded audio is empty")
+              continue
+         
+          # Post-processing the pitches according to the beat base
+          pitches, durations = pitch_duration_detection(beat_base, pitches)
+          log_debug("Durations: %s"%(str(durations)))
+  
+          # Determine the clef according to pitches
+          clef = clef_detection(pitches)
+  
+          # Compose the pitches
+          stream = compose_pitches(clef, pitches, durations)
+  
+          # Write the note stream and export it into a svg
+          write_music(stream, name2path("melody_%d"%(melody_count)))
+          export_music(stream, "melody_%d"%(melody_count))
+  
+          # Plot the last piece of wave
+          wave_plot(piece, 0, sample_rate, beat_secs, end_time - start_time)
+  
+          leave_message("update", 2)
+  
+</code></pre>
+<pre><code>
+  # controller.py
+  """
+  Functions that connect the buttons and touchscreen to the main program
+  - Checking handles to decide whether a button is pressed or not
+  - Pygame codes that draw a music symbol
+  - Checking handle to decide whether the music symbol is touched or not
+  Control Panal Design:
+  - GPIO #17 (The First Button): Start/Continue Recording
+  - GPIO #22 (The Second Button): Pause Recording
+  - GPIO #23 (The Third Button): End Recording
+  - GPIO #27 (The Last Button): Quit
+  """
+  
+  import RPi.GPIO as GPIO
+  import pygame
+  import os
+  
+  _START = 17
+  _PAUSE = 22
+  _END = 23
+  _QUIT = 27
+  _WIDTH = 320
+  _HEIGHT = 240
+  _IMAGE_PATH = "source/music_symbol.jpg"
+  _SIZE = 100
+  _RED = (255, 0, 0)
+  _WHITE = (255, 255, 255)
+  
+  os.putenv('SDL_VIDEODRIVER', 'fbcon')  # Display on piTFT
+  os.putenv('SDL_FBDEV', '/dev/fb0')
+  os.putenv('SDL_MOUSEDRV', 'TSLIB')  # Track mouse clicks on piTFT
+  os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
+  
+  pygame.init()
+  pygame.mouse.set_visible(False)
+  
+  width, height = _WIDTH, _HEIGHT
+  size = (width, height)
+  screen = pygame.display.set_mode(size)
+  screen.fill(_WHITE)
+  
+  
+  def mouse_on_button(mouse, rect):
+      x, y, width, height = rect.centerx, rect.centery, rect.w, rect.h
+      return (x - width//2 < mouse[0] < x + width//2) and \
+             (y - height//2 < mouse[1] < y + height//2)
+  
+  
+  def get_music_note_symbol(image_path, size, x, y):
+      music_note_symbol = pygame.image.load(image_path)
+      music_note_symbol = pygame.transform.scale(music_note_symbol, [size, size])
+      music_note_symbol_rect = music_note_symbol.get_rect()
+      music_note_symbol_rect = music_note_symbol_rect.move([int(x), int(y)])
+      return music_note_symbol, music_note_symbol_rect
+  
+  
+  def draw_boundary(rect, color):
+      x, y, width, height = rect.centerx, rect.centery, rect.w, rect.h
+      vertex = [(x - width//2, y - height//2),
+                (x - width//2, y + height//2),
+                (x + width//2, y + height//2),
+                (x + width//2, y - height//2)]
+      boundary = pygame.draw.lines(screen, color, True, vertex, 3)
+      return boundary
+  
+  # Warning: draw a large number of lines, need to be optimize
+  
+  
+  def highlight(rect):
+      draw_boundary(rect, _RED)
+      pygame.display.flip()
+  
+  
+  def resume(rect):
+      draw_boundary(rect, _WHITE)
+      pygame.display.flip()
+  
+  
+  music_note_symbol, music_note_symbol_rect = get_music_note_symbol(
+      _IMAGE_PATH, _SIZE, _WIDTH / 3, _HEIGHT / 3)
+  screen.blit(music_note_symbol, music_note_symbol_rect)
+  pygame.display.flip()
+  
+  GPIO.setmode(GPIO.BCM)   # Set for broadcom numbering
+  GPIO.setup(_START, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+  GPIO.setup(_PAUSE, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+  GPIO.setup(_END, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+  GPIO.setup(_QUIT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+  
+  
+  def start_pressed() -> bool:
+      return not GPIO.input(_START)
+  
+  
+  def pause_pressed() -> bool:
+      return not GPIO.input(_PAUSE)
+  
+  
+  def end_pressed() -> bool:
+      return not GPIO.input(_END)
+  
+  
+  def quit_pressed() -> bool:
+      return not GPIO.input(_QUIT)
+  
+  # The funciton will be invoked in the whole process loop
+  
+  
+  def beat_pressed() -> bool:
+      is_pressed = False
+      for ev in pygame.event.get():
+  
+          mouse_pos = pygame.mouse.get_pos()
+          if ev.type == pygame.QUIT:
+              pygame.quit()
+              exit()
+  
+          if mouse_on_button(mouse_pos, music_note_symbol_rect):
+              if ev.type == pygame.MOUSEBUTTONDOWN:
+                  is_pressed = True
+                  highlight(music_note_symbol_rect)
+                  pygame.display.flip()
+              if ev.type == pygame.MOUSEBUTTONUP:
+                  resume(music_note_symbol_rect)
+  
+      return is_pressed
+  
+</code></pre>
+<pre><code>
+# exchange.py
+"""
+A simple exchange package that uses a json file
+to allow two proceses exchange information
+"""
+
+import json
+
+_NAME = "./source/exc.json"
+
+def leave_message(key:str, value:str) -> None:
+    with open(_NAME, "r") as f:
+        data = json.load(f)
+    data[key] = value
+    with open(_NAME, "w") as f:
+        json.dump(data, f, indent=2)
+
+def read_message(key:str)->None:
+    with open(_NAME, "r") as f:
+        data = json.load(f)
+    return data[key]
+</code></pre>
+<pre><code>
+# logger.py
+import logging
+import logging.handlers
+
+log = logging.getLogger('music_notation')
+log.setLevel(logging.DEBUG)
+
+logfile = "./logs/music.log"
+handler = logging.handlers.RotatingFileHandler(
+    logfile, maxBytes=4*1024, backupCount=3)
+formatter = logging.Formatter('%(asctime)s-%(levelname)s:%(message)s')
+handler.setFormatter(formatter)
+log.addHandler(handler)
+
+
+def log_info(info: str) -> None:
+    log.info(info)
+
+
+def log_debug(info: str) -> None:
+    log.debug(info)
+
+
+def log_warning(info: str) -> None:
+    log.warning(info)
+</code></pre>
+<pre><code>
+# notation.py
+"""
+Functions related to generating notations:
+- Generate a music21 stream of pitches
+- Write these pitches into a lilypond source, a midi or a svg
+"""
+
+import music21
+
+_CLEF = {
+    "treble": music21.clef.TrebleClef(),
+    "bass": music21.clef.BassClef(),
+    "alto": music21.clef.AltoClef(),
+    "tenor": music21.clef.TenorClef()
 }
-              </code></pre>
+
+
+def pitchify(name: str, duration: float) -> music21.note.Note:
+    if name == "R":
+        return music21.note.Rest(length=duration)
+    return music21.note.Note(name, quarterLength=duration*4)
+
+
+def pitch_name_preprocess(name: str) -> str:
+    name = name.replace("♯", "#")
+    name = name.replace("♭", "-")
+    return name
+
+
+def compose_pitches(clef: str, pitches: list, durations: list, meter: str = '4/4') -> music21.stream.Stream:
+    stream = music21.stream.Stream()
+    stream.timeSignature = music21.meter.TimeSignature(meter)
+    if clef in _CLEF:
+        stream.clef = _CLEF[clef]
+    for pitch, duration in zip(pitches, durations):
+        if type(pitch) == list:
+            pitch_list = []
+            for p in pitch:
+                p = pitch_name_preprocess(p)
+                pitch_list.append(pitchify(p, duration))
+            noted = music21.chord.Chord(pitch_list)
+        else:
+            pitch = pitch_name_preprocess(pitch)
+            noted = pitchify(pitch, duration)
+        stream.append(noted)
+    return stream
+
+
+def write_music(stream: music21.stream.Stream, filename: str) -> None:
+    stream.write("lilypond", fp="%s.ly" % filename)
+    stream.write("midi", fp="%s.mid" % filename)
+
+
+def export_music(stream: music21.stream.Stream, filename: str) -> None:
+    converter = music21.lily.translate.LilypondConverter()
+    converter.loadFromMusic21Object(stream)
+    converter.createSVG("%s" % (filename))
+
+
+if __name__ == "__main__":
+    pitches = [['C4', 'D4'], 'C4', 'C4', 'C4']
+    # music21 uses 1 to mark quarter note...
+    durations = [1, 1, 1, 1]
+    stream = compose_pitches('treble', pitches, durations)
+    #write_music(stream, "notation_test")
+    export_music(stream, "./results/ntest")
+</code></pre>
+<pre><code>
+# pitch_detection.py
+"""
+Functions related to pitch detection:
+- Slice the audio into small pieces
+- Detect the pitch of each piece
+- Decide the durations and clefs
+"""
+
+import librosa
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+from scipy.signal import find_peaks
+from typing import List, Tuple
+
+_NLAGS = 5000
+_VIS_POINTS = 10000
+_SPECTRAL_NAME = "spectral"
+
+def single_pitch_detection(data: List[int], sample_rate: int) -> str:
+    """
+    Single Pitch Detection
+    - data: Slicing data according to beats
+    - sample_rate: self-explanatory
+    It loads a file, get the music and the sample_rate
+    May lead to warning: Librosa tries to use libsndfile first,
+    and if that fails, it will fall back on the audioread package
+    """
+    pitch_note = 'R'
+    # The range of the allowed frequencies
+    bass_clef_freq_min = librosa.note_to_hz("C2")
+    treble_clef_freq_max = librosa.note_to_hz("C6")
+
+    auto_correlation_function = sm.tsa.acf(data, nlags=_NLAGS)
+    # Find peaks of the autocorrelation
+    peaks = find_peaks(auto_correlation_function)[0]
+    if len(peaks) > 0:
+        # Choose the first peak as our pitch component lag
+        lag = peaks[0]
+    else:
+        return pitch_note
+
+    # Transform lag into frequency
+    pitch_freq = sample_rate / lag
+    if pitch_freq <= treble_clef_freq_max and pitch_freq >= bass_clef_freq_min:
+        pitch_note = librosa.hz_to_note(pitch_freq)
+    return pitch_note
+
+
+def pitch_detection(file_path: str, beat_itvs: list, sample_rate: int) -> list[str]:
+    """
+    Detect pitches
+    - file_path: the path of the target audio file
+    - beat_itvs: beat intervals used to slice the audio
+    - sample_rate: the sample rate
+    """
+    # Data acquired from the sound track
+    data, _ = librosa.load(file_path, sr=sample_rate)
+    i = 0
+    start_ptr = 0   # The start of the data slicing
+    N = len(data)   # The length of the data
+    pitches = []    # pitches detected
+
+    beat_itv = sum(beat_itvs)/len(beat_itvs)
+    while (start_ptr <= N):
+        if i < len(beat_itvs):
+            data_itv = int(beat_itvs[i] * sample_rate)
+        else:
+            data_itv = int(beat_itv * sample_rate)
+
+        pitch = 'R'
+        if (start_ptr + data_itv <= N):
+            data_piece = data[start_ptr: start_ptr + data_itv]
+            pitch = single_pitch_detection(
+                data_piece, sample_rate
+            )
+        else:
+            data_piece = data[start_ptr: N]
+            pitch = single_pitch_detection(
+                data_piece, sample_rate
+            )
+
+        pitches.append(pitch)
+        start_ptr += data_itv
+        i += 1
+
+    return pitches
+
+
+def write_pitch(pitches: List[str], file_path: str) -> None:
+    with open(file_path, "w") as fp:
+        fp.write(" ".join(pitches))
+
+
+def pitch_duration_detection(note: int, pitches: List[str]) -> Tuple[list, list]:
+    pitches_num = len(pitches)
+    start_ptr = 0
+    pitches_partition = []
+    pitches_duration = []
+
+    while start_ptr < pitches_num:
+        pitches_partition.append(pitches[start_ptr])
+        pitches_duration.append(1 / note)
+        if (start_ptr + note <= pitches_num):
+            for i in range(note - 1):
+                if pitches[start_ptr + i + 1] == pitches_partition[-1]:
+                    pitches_duration[-1] += 1 / note
+                else:
+                    pitches_partition.append(pitches[start_ptr + i + 1])
+                    pitches_duration.append(1 / note)
+
+        else:
+            for i in range(pitches_num - start_ptr - 1):
+                if pitches[start_ptr + i + 1] == pitches_partition[-1]:
+                    pitches_duration[-1] += 1 / note
+                else:
+                    pitches_partition.append(pitches[start_ptr + i + 1])
+                    pitches_duration.append(1 / note)
+
+        start_ptr += note
+
+    return pitches_partition, pitches_duration
+
+
+def within_the_range(val, min, max) -> bool:
+    return (val >= min and val <= max)
+
+
+def clef_detection(pitches: list[str]) -> str:
+    treble_clef_freq_min = librosa.note_to_hz("C4")
+    treble_clef_freq_max = librosa.note_to_hz("C6")
+    alto_clef_freq_min = librosa.note_to_hz("C3")
+    alto_clef_freq_max = librosa.note_to_hz("C5")
+    bass_clef_freq_min = librosa.note_to_hz("C2")
+    bass_clef_freq_max = librosa.note_to_hz("C4")
+
+    treble_cnt = 0
+    alto_cnt = 0
+    bass_cnt = 0
+
+    clef = ""
+
+    for pitch in pitches:
+        if pitch == 'R':
+            continue
+        if within_the_range(librosa.note_to_hz(pitch), treble_clef_freq_min, treble_clef_freq_max):
+            treble_cnt += 1
+        if within_the_range(librosa.note_to_hz(pitch), alto_clef_freq_min, alto_clef_freq_max):
+            alto_cnt += 1
+        if within_the_range(librosa.note_to_hz(pitch), bass_clef_freq_min, bass_clef_freq_max):
+            bass_cnt += 1
+
+    max_cnt = max(treble_cnt, alto_cnt, bass_cnt)
+    if max_cnt == treble_cnt:
+        clef = "treble"
+    elif max_cnt == alto_cnt:
+        clef = "alto"
+    else:
+        clef = "bass"
+
+    return clef
+
+
+def wave_plot(data: int, start_time: float, sample_rate: int, beats: List[int], time_duration: int = 5) -> None:
+    start_ptr = int(start_time * sample_rate)
+    end_ptr = int((start_time + time_duration) * sample_rate)
+    sample_itv_plot = int(sample_rate*time_duration//_VIS_POINTS)
+    data_plot = data[start_ptr:end_ptr:sample_itv_plot]
+    data_plot_len = len(data_plot)
+    beats_plot = []
+    j = len(beats) - 1
+    while j >= 0:
+        beat = beats[j]
+        if beat >= start_time and beat <= start_time + time_duration:
+            beats_plot.append(beat)
+        if beat < start_time:
+            break
+        j -= 1
+
+    time_plot = [(start_time + time * time_duration / data_plot_len)
+                 for time in range(data_plot_len)]
+    fig, ax = plt.subplots()
+    ax.plot(time_plot, data_plot, 'k', linewidth=1)
+    for beat in beats_plot:
+        plt.axvline(beat, linestyle='--', color='r',
+                    label='axvline - full height', linewidth=2)
+    fig.set_figwidth(12)
+    fig.set_figheight(3)
+    plt.grid(False)
+    plt.axis('off')
+    fig.savefig("%s.svg"%(_SPECTRAL_NAME), format='svg')
+    plt.close(fig=fig)
+
+
+if __name__ == "__main__":
+    file_path = "/home/pi/automatic_music_notation/sound_track/C2Long.wav"
+    data, _ = librosa.load(file_path, sr=22050)
+    wave_plot(data, 0, 22050, [1, 2, 3, 4])
+    # pitch_note = single_pitch_detection(data, 22050)
+    # print(pitch_note)
+    # pitches = []
+    # np.random.seed(1)
+    # pitches_range = np.random.randint(65, 71, 16 * 2)
+    # pitches_random = [chr(i) for i in pitches_range]
+    # pitches_all_A = ['A'] * 32
+    # pitches_test1 = ['A'] * 4 + ['B'] * 4 + ['A'] * 4 + ['C'] * 2 + ['A'] * 4 + ['D'] * 4
+    # pitches_test2 = ['A'] * 6 + ['B']
+    # pitches_partition, pitches_duration = pitch_duration_detection(16, pitches_test2)
+    # clef = clef_detection(pitches_test2)
+    # print("pitches: %s" %str(pitches))
+    # print("pitches_partition: %s" %str(pitches_partition))
+    # print("pitches_duration: %s" %str(pitches_duration))
+    # print("clef: %s" %str(clef))
+    # pitch_freqs = pitch_detection(file_path, [0.5], 22050)
+    # print(pitch_freqs)
+</code></pre>
+<pre><code>
+# recording.py
+"""
+Functions related to sound recording:
+- Recording the voice from the USB-Microphones (one channel)
+"""
+
+import sounddevice as sd
+import numpy as np
+from scipy.io.wavfile import write
+
+from logger import log_debug
+
+_SAMPLE_RATE = 44100
+
+
+def record_long_piece(seconds: float, fs: int = _SAMPLE_RATE) -> np.ndarray:
+    piece = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
+    return piece
+
+
+def write_piece(piece: np.ndarray, filename: str, fs: int = _SAMPLE_RATE) -> None:
+    write(filename, fs, piece)
+
+
+def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE) -> np.ndarray:
+    # Stop the recording
+    sd.stop()
+    log_debug("Recorded events: %s" % (str(event_times)))
+    if event_times[0][0] != 'start':
+        log_debug("Event logs are corrupted")
+        exit(1)
+    # Cut and concatenate the pieces according to the pause, resume events
+    pieces = []
+    prev_sec = event_times[0][1]
+    paused = False
+    for event, sec in event_times:
+        if event == "pause":
+            short_piece = piece[int(prev_sec*fs):int(sec*fs), :]
+            log_debug("Get a piece between %f and %f" % (prev_sec, sec))
+            pieces.append(short_piece)
+            paused = True
+        elif event == "resume":
+            prev_sec = sec
+            paused = False
+        elif event == "end" and not paused:
+            short_piece = piece[int(prev_sec*fs):int(sec*fs), :]
+            log_debug("Get a piece between %f and %f" % (prev_sec, sec))
+            pieces.append(short_piece)
+    large_piece = np.vstack(pieces)
+    return large_piece
+</code></pre>
+
       </div>
 
     </div><!-- /.container -->
