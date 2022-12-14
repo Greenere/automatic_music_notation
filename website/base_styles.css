@@ -15,3 +15,16 @@ hr { margin: 20px 0 20px 0; }
   margin-right: auto;  
   margin-left: auto;  
 }  
+
+pre {
+  background-color: #282c34 !important;
+}
+
+figcaption {
+  color: black;
+  font-style: italic;
+  padding-top: 20px;
+  font-size: 16px;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  text-align: center;
+}
