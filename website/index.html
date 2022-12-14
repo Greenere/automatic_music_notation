@@ -875,6 +875,184 @@ def extract_pieces(piece: np.ndarray, event_times: list, fs: int = _SAMPLE_RATE)
     return large_piece
 </code></pre>
 
+<pre><code># server.py
+"""
+A simple server designed to cast a "virtual printer"
+- Serve the index page
+- Serve the requested data
+"""
+
+import json
+from flask import Flask, request, jsonify, send_file
+from gevent.pywsgi import WSGIServer
+from gevent import monkey
+
+from exchange import read_message, leave_message
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    filename='index.html'
+    return send_file(filename)
+
+@app.route('/audio/<path>')
+def audio(path):
+    filepath = "./results/%s"%(path)
+    try: 
+        with open(filepath, "rb") as f:
+            data = f.read()
+        return data
+    except:
+        return ''
+
+@app.route('/data',methods=['GET'])
+def dataServe():
+    reqs=request.args.get('request')
+    reqs = json.loads(reqs)
+    if reqs['type'] == 'notation':
+        melody = read_message("melody")
+        if melody == "":
+            return ""
+        resp = None
+        with open("./%s.svg"%(melody), "r") as f:
+            resp = f.read()
+        return resp
+    elif reqs['type'] == 'recording':
+        recording = read_message("recording")
+        if recording == "":
+            return ""
+        resp = None
+        with open("./%s.svg"%(recording), "r") as f:
+            resp = f.read()
+        return resp
+    elif reqs['type'] == 'audio':
+        recorded = read_message("audio")
+        if recorded == "":
+            return jsonify({"name":""})
+        return jsonify({"name":"%s.wav"%(str(recorded))})
+    elif reqs['type'] == 'ping':
+        updated = read_message("update")
+        if updated == 1:
+            return jsonify({"update":1})
+        elif updated == 2:
+            leave_message("update", -1)
+            return jsonify({"update":2})
+        else:
+            return jsonify({"update":-1})
+    return ""
+
+if __name__ == '__main__':
+    monkey.patch_all()
+
+    host: str = '10.49.53.185'
+    port: int = 8880
+
+    print('SERVING ON: ', 'http://' + host + ':' + str(port))
+
+    http_server = WSGIServer((host, port), app)
+    http_server.serve_forever()
+</code></pre>
+<pre><code>&lt!-- index.html -->
+&lt!DOCTYPE html>
+&lthtml>
+    &lthead>
+        &ltmeta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        &ltmeta http-equiv="Pragma" content="no-cache" />
+        &ltmeta http-equiv="Expires" content="0" />
+        &lttitle>MUSIC NOTATION&lt/title>
+        &ltscript type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">&lt/script>
+    &lt/head>
+    &ltbody>
+        &ltdiv style = "position:absolute; left:80px; top:10px">
+          &lth1>MUSIC NOTATION&lt/h1>
+          &ltp>© Haoyang Li & Yue Zhao&lt/p>
+        &lt/div>
+        &ltdiv style = "position:absolute; left:80px; top:110px">
+          &lth1>BEAT & RECORDING&lt/h1>
+          &ltdiv id="recording">&lt/div>
+        &lt/div>
+        &ltdiv style = "position: absolute; left: 420px; top:125px">
+            &ltaudio id = "recorded" controls>
+            &lt/audio>
+        &lt/div>
+        &ltdiv style = "position:absolute; left:80px; top:500px">
+          &lth1>NOTATION&lt/h1>
+          &ltdiv id="notation">&lt/div>
+        &lt/div>
+        &ltscript>
+            function requestData(reqs,messageHandler,errorHandler){
+                var host='10.49.53.185';
+                var port='8880';
+                $.ajax({
+                    type : "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    url : "http://"+host+":"+port+"/data",
+                    data : {"request":JSON.stringify(reqs)},
+                    success :function(result){
+                        messageHandler(result);
+                    },
+                    error : function(e){
+                        errorHandler();
+                    }
+                });
+            }
+
+            function update_notation(m){
+                document.getElementById("notation").innerHTML = m;
+            }
+
+            function update_recording(m){
+                document.getElementById("recording").innerHTML = m;
+            }
+
+            function update_audio(m){
+                document.getElementById("recorded").innerHTML = "&ltsource src=\"/audio/"+m.name+"\">"
+            }
+
+            function request_notation(){
+                request = {
+                    "type":"notation"
+                }
+                requestData(request, update_notation, (e)=>{})
+            }
+
+            function request_recording(){
+                request = {
+                    "type":"recording"
+                }
+                requestData(request, update_recording, (e)=>{})
+            }
+
+            function request_audio(){
+                request = {
+                    "type":"audio"
+                }
+                requestData(request, update_audio, (e)=>{})
+            }
+
+            function ping_result(m){
+                if (m.update == 2){
+                    request_notation();
+                    request_audio();
+                    request_recording();
+                }
+            }
+
+            function periodic_ping(){
+                request = {
+                    "type":"ping"
+                }
+                requestData(request,ping_result, (e)=>{})
+            }
+
+            // Ping the server periodically for updates
+            setInterval(periodic_ping, 5000);
+        &lt/script>
+    &lt/body>
+&lt/html>
+</code></pre>
+
       </div>
 
     </div><!-- /.container -->
