@@ -15,7 +15,6 @@ _NLAGS = 5000
 _VIS_POINTS = 10000
 _SPECTRAL_NAME = "spectral"
 
-
 def single_pitch_detection(data: List[int], sample_rate: int) -> str:
     """
     Single Pitch Detection
