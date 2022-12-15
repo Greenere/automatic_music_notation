@@ -128,6 +128,39 @@ by the quality of recording, the quality of beats and the faults of pitch detect
 
       <div style="text-align:center;">
               <h2>Design</h2>
+              <figure>
+                <img src="pics/system.png" width="800" style="padding-top: 10px;">
+                <figcaption>Figure 2. The overall design of the main program.</figcaption>
+              </figure>
+              <p class="regular_paragraph" style="padding-bottom: 0px;">
+                The overall design of the main program is shown in Figure 2.
+                The program consists of two status: an idle status when it only 
+                polls for the start button and the quit button, and a 
+                started status when it polls all four buttons as well as the touchscreen for the taps.
+                When the program is initiated, it enters into the idle status until 
+                the start button is pressed. Then it starts the recording and prepares 
+                some data structures to remember states and events and gets the program into the started status. 
+                In the started status, the recording always runs in the background while 
+                the program polls for events, including pause, resume (the start button is 
+                overloaded as the resume button in started status) and beat.
+                To end the recording and get the results, you have to press an end button,
+                which will end the recording and calling other functions to 
+                process the audio, detect the pitches and generate the notations.
+                It will also notify the server so we can easily see the results through a web page.
+                Whenever the quit button is pressed, 
+                the entire program exits. 
+              </p>
+              <p class="regular_paragraph">
+                The server is quite simple, it hosts a web page, where there is a ping request from 
+                the web page pinging the server periodicly, and 
+                the server will read <code>exc.json</code> to check for update. Once the main program finishes a piece, 
+                it will notify the server by setting 
+            <code>"udpate"</code> in <code>exc.json</code> as <code>2</code>, 
+            then the next time the server recieves the ping, it checks the json file 
+            and notice that there is an update, so it will clear the update and
+             respond the ping with the update. The web page will then 
+             request for the results (i.e. the WAV file, the SVG notation and the SVG wave visualization) and the server will serve those results for it.
+              </p>
       </div>
     
       <hr id='record'>
@@ -136,7 +169,7 @@ by the quality of recording, the quality of beats and the faults of pitch detect
               <h2>Recording</h2>
               <figure>
               <img src="pics/recording_explained.png" alt="An explanation for the mechanism of recording" width="1000">
-              <figcaption>Figure 2. An example of a recording process</figcaption>  
+              <figcaption>Figure 3. An example of a recording process</figcaption>  
             </figure>
               <p style="text-align: justify;padding: 10px 30px;font-size: 18px;">
 As illustrated in Figure 2, once you pressed the start button, the recording will start (and it will time out
@@ -257,7 +290,7 @@ the start time in the event sequence will be adjusted according to the first bea
                 </tr>
                 </tbody>
             </table>
-            <figcaption>Table 1. An Instance that Maps Pitch Notes to the Corresponding Frequency</figcaption>
+            <figcaption>Table 1. An instance that maps pitch notes to the corresponding frequencies</figcaption>
         </div>
             <p class="regular_paragraph">Table 1 above is an instance mapping pitch note in typical <a href="https://en.wikipedia.org/wiki/Clef">Alto Clef</a> to the corresponding frequency. We believe if the frequency we detected is closest to a certain frequency in the map, the corresponding pitch related to that frequency would be the exact the pitch we detect.</p>
                 </article>
@@ -269,7 +302,7 @@ the start time in the event sequence will be adjusted according to the first bea
               <figure>
                 <img src="pics/clef.png" width="800">
                 <figcaption>
-                    Figure ?. The three clefs it supports and the pitch ranges 
+                    Figure 4. The three clefs it supports and the pitch ranges 
                     of them, cited from <a href="https://en.wikipedia.org/wiki/Clef">Clef - wikipedia</a>.
                 </figcaption>
               </figure>
@@ -319,11 +352,11 @@ of the corresponding musical notation.
         </p>
         <figure>
             <img style="margin-left: -50px;" src="exps/counting_number/cn_spectral.svg">
-            <figcaption>Figure ?. The audio waves and beats of the counting numbers recording.</figcaption>
+            <figcaption>Figure 5. The audio waves and beats of the counting numbers recording.</figcaption>
         </figure>
         <figure>
             <img style="margin-left: -50px;" src="exps/counting_number/cn_notation.svg">
-            <figcaption>Figure ?. The generated notations of the counting numbers recording.</figcaption>
+            <figcaption>Figure 6. The generated notations of the counting numbers recording.</figcaption>
         </figure>
         <p class="regular_paragraph">
             As you can see, although we cannot define the correct pitch for the counting, 
@@ -351,11 +384,11 @@ of the corresponding musical notation.
         </p>
         <figure>
             <img style="margin-left: -50px;" src="exps/piano_fingers/pf_spectral.svg">
-            <figcaption>Figure ?. The audio waves and beats of the piano finger practice recording.</figcaption>
+            <figcaption>Figure 7. The audio waves and beats of the piano finger practice recording.</figcaption>
         </figure>
         <figure>
             <img style="margin-left: -50px;" src="exps/piano_fingers/pf_notation.svg">
-            <figcaption>Figure ?. The generated notations of the piano finger practice recording.</figcaption>
+            <figcaption>Figure 8. The generated notations of the piano finger practice recording.</figcaption>
         </figure>
         <p class="regular_paragraph">
             The wavy pattern of the finger practice is quite clear on the genrated notation.
@@ -381,11 +414,11 @@ of the corresponding musical notation.
         </p>
         <figure>
             <img style="margin-left: -50px;" src="exps/amazing_grace/ag_spectral.svg">
-            <figcaption>Figure ?. The audio waves and beats of the amazing grace singing recording.</figcaption>
+            <figcaption>Figure 9. The audio waves and beats of the amazing grace singing recording.</figcaption>
         </figure>
         <figure>
             <img style="margin-left: -50px;" src="exps/amazing_grace/ag_notation.svg">
-            <figcaption>Figure ?. The generated notations of the amazing grace singing recording.</figcaption>
+            <figcaption>Figure 10. The generated notations of the amazing grace singing recording.</figcaption>
         </figure>
         <p class="regular_paragraph">
             As you can see, it does look like a music 
@@ -410,6 +443,29 @@ of the corresponding musical notation.
 
       <div style="text-align:center;">
       <h2>Future</h2>
+      <div class="regular_paragraph">
+      <ul>
+        <li>
+            Although the autocorrelation algorithm works pretty well in almost scenarios, 
+            it occasionally suffers from octave-shifting problems. A plausible remedy for this may involve a new algorithm published by 
+            <a href="https://www.tandfonline.com/author/Kumaraswamy%2C+Balachandra">Balachandra Kumaraswamy</a> in 2019 named <a href="https://www.tandfonline.com/doi/abs/10.1080/02564602.2018.1465859?journalCode=titr20">Octave Error Reduction in Pitch Detection Algorithms Using Fourier Series Approximation Method</a>
+        </li>
+        <li>
+            Instead of monophony, a more typical scenario is people are likely to play music in an orchestra or a band, resulting in a homophonic performance. In this case, besides one melody may predominate the rhythm, one or more additional strands may flesh out the harmony. Unfortunately, the current algorithm only works well for the monophonic case. For homophony, a feasible approach is to first detect the predominant pitches based on the magnitude of the sound wave. Then we subtract the predominant waveform from the original wave and detect the secondary predominant using the same approach. Repeat the procedure until detecting all the melodies.
+        </li>
+        <li>
+            Currently, our detector is only sensitive to standard syllables from classic instruments like the piano. 
+            Further, we'd like to apply the detector for the human voice so that a song with different sensuality and lyrics can output fixed staff notations. Actually, researchers also have the same thoughts as us, and a nice paper
+             <a href="https://speech.zone/readings/other/talkin-rapt/">Talkin: A Robust Algorithm for Pitch Tracking (RAPT)</a> from David Talkin may help.
+        </li>
+        <li>
+            One of the initial thoughts of the project is to build a nice voice detector for improvision so that musicians do not have to waste a lot of time composing the music sheet. Hence, real-time detection may be a cool thing to step forward. The idea is instead of saving the whole sound from the microphone and output them after recording, the detector would output the staff notations right after dectecting the pitch and clef. A naive but workable approach is to save the sound track every second and appy the detection algorithm to every sound track. As the detection algorithm returns, outputting the notations to the screen.
+        </li>
+        <li>
+            To make the project more intact, adding a reverse procedure that inputs staff notations and outputs the music may be a nice future plan. Since what we want to do is basic converting an image to a bunch of pitches, conducting machine learning algorithm typically Convolutional Neural Network (CNN) would be a good idea. CNN is really good at classifying images due to its nice shifting invariance. We can train the network on a powerful machine and deploy the trained model onto the Raspberry Pi.
+        </li>
+      </ul>
+      </div>
               
     </div>
 
@@ -755,8 +811,7 @@ def beat_pressed() -> bool:
     return is_pressed
 
 </code></pre>
-<pre><code>
-# exchange.py
+<pre><code># exchange.py
 """
 A simple exchange package that uses a json file
 to allow two proceses exchange information
@@ -778,8 +833,15 @@ def read_message(key:str)->None:
         data = json.load(f)
     return data[key]
 </code></pre>
-<pre><code>
-# logger.py
+<pre><code>/*exc.json*/
+{
+    "melody": "melody_0",
+    "recording": "spectral",
+    "audio": "melody_0",
+    "update": -1
+}
+</code></pre>
+<pre><code># logger.py
 import logging
 import logging.handlers
 
@@ -805,8 +867,7 @@ def log_debug(info: str) -> None:
 def log_warning(info: str) -> None:
     log.warning(info)
 </code></pre>
-<pre><code>
-# notation.py
+<pre><code># notation.py
 """
 Functions related to generating notations:
 - Generate a music21 stream of pitches
