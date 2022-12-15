@@ -31,6 +31,7 @@
 
     <link rel="stylesheet" href="./dist/highlight/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="./dist/highlight/line_number_styles.css">
+    <link rel="stylesheet" href="katex_styles.css">
     <script src="./dist/highlight/highlight.min.js"></script>
     <script src="./dist/highlight/highlightjs-line-numbers.js"></script>
     <script>
@@ -61,7 +62,7 @@
             <li><a href="#record">Recording</a></li>
             <li><a href="#pitch">Pitch Detection</a></li>
             <li><a href="#note">Music Notation</a></li>
-            <li><a href="#result">Results</a></li>
+            <li><a href="#result">Testing & Results</a></li>
             <li><a href="#future">Future</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -161,6 +162,105 @@ the start time in the event sequence will be adjusted according to the first bea
 
       <div style="text-align:center;">
               <h2>Pitch Detection</h2>
+
+              <p class="regular_paragraph" style="padding-bottom: 0px;">Although a large number of different approaches such as AMDF (<a href="[Information | Free Full-Text | A Signal Period Detection Algorithm Based on Morphological Self-Complementary Top-Hat Transform and AMDF](https://www.mdpi.com/2078-2489/10/1/24#:~:text=Average%20magnitude%20difference%20function%20(AMDF,the%20background%20noise%20is%20strong.)">Average Magnitude Difference Function</a>) and ASMDF (<a href="[(PDF) Pitch Tracking of Acoustic Signals based on Average Squared Mean Difference Function](https://www.researchgate.net/publication/1960632_Pitch_Tracking_of_Acoustic_Signals_based_on_Average_Squared_Mean_Difference_Function)">Average Squared Mean Difference Function</a>) have been conducted to detect pitches, the autocorrection pitch detection algoritm is proven over time as the one of the most successful algorithms, partly due to its reliability and robustness. As the algorithm only involves computations directly on the waveform, it can greatly benefit from the digital hardware implemented in Raspberry Pi with only a simple multiplier and a basic ALU (Arithmetric Logic Unit). Also, the method is almost phase insensitive and easy to use to detect the pitch frequency.</p>
+            <p class="regular_paragraph">The theory of autocorrelation algorithm is not complex. Given a discrete time signal <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">n</span><span class="mclose">]</span></span></span></span>, the autocorrelation function is defined as below:</p>
+                <span class="katex-display"><span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord"><span style="margin-right:0.00773em;" class="mord mathnormal">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:0.151392em;" class="vlist"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span style="height:2.7em;" class="pstrut"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:0.15em;" class="vlist"><span></span></span></span></span></span></span><span class="mopen">[</span><span style="margin-right:0.1132em;" class="mord mathnormal">τ</span><span class="mclose">]</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span><span class="mrel">=</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span></span><span class="base"><span style="height:3.1810030000000005em;vertical-align:-1.352667em;" class="strut"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:0.69444em;" class="vlist"><span style="top:-2.355669em;margin-left:0em;"><span style="height:3em;" class="pstrut"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span style="margin-right:0.10903em;" class="mord mathnormal mtight">N</span><span class="mrel mtight">→</span><span class="mord mtight">∞</span></span></span></span><span style="top:-3em;"><span style="height:3em;" class="pstrut"></span><span><span class="mop">lim</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:0.744331em;" class="vlist"><span></span></span></span></span></span><span style="margin-right:0.16666666666666666em;" class="mspace"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:1.32144em;" class="vlist"><span style="top:-2.314em;"><span style="height:3em;" class="pstrut"></span><span class="mord"><span class="mord">2</span><span style="margin-right:0.10903em;" class="mord mathnormal">N</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span><span class="mbin">+</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span><span class="mord">1</span></span></span><span style="top:-3.23em;"><span style="height:3em;" class="pstrut"></span><span style="border-bottom-width:0.04em;" class="frac-line"></span></span><span style="top:-3.677em;"><span style="height:3em;" class="pstrut"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:0.7693300000000001em;" class="vlist"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span style="margin-right:0.16666666666666666em;" class="mspace"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:1.8283360000000002em;" class="vlist"><span style="top:-1.8556639999999998em;margin-left:0em;"><span style="height:3.05em;" class="pstrut"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mrel mtight">=</span><span class="mord mtight">−</span><span style="margin-right:0.10903em;" class="mord mathnormal mtight">N</span></span></span></span><span style="top:-3.0500049999999996em;"><span style="height:3.05em;" class="pstrut"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.300005em;margin-left:0em;"><span style="height:3.05em;" class="pstrut"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span style="margin-right:0.10903em;" class="mord mathnormal mtight">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:1.352667em;" class="vlist"><span></span></span></span></span></span><span style="margin-right:0.16666666666666666em;" class="mspace"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">n</span><span class="mclose">]</span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">n</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span><span class="mbin">+</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span style="margin-right:0.1132em;" class="mord mathnormal">τ</span><span class="mclose">]</span></span></span></span></span>
+            <p class="regular_paragraph">In terms of pitch detection, if we confine the waveform to one single pitch, <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">n</span><span class="mclose">]</span></span></span></span>  would be periodic with period <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:0.68333em;vertical-align:0em;" class="strut"></span><span style="margin-right:0.13889em;" class="mord mathnormal">T</span></span></span></span>, meaning for every n, <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">n</span><span class="mclose">]</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span><span class="mrel">=</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">n</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span><span class="mbin">+</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span style="margin-right:0.13889em;" class="mord mathnormal">T</span><span class="mclose">]</span></span></span></span>. Furthmore, it is not hard to prove that the autocorrelation function also become periodic with exact the same period <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:0.68333em;vertical-align:0em;" class="strut"></span><span style="margin-right:0.13889em;" class="mord mathnormal">T</span></span></span></span></p>
+                <span class="katex-display"><span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord"><span style="margin-right:0.00773em;" class="mord mathnormal">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:0.151392em;" class="vlist"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span style="height:2.7em;" class="pstrut"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:0.15em;" class="vlist"><span></span></span></span></span></span></span><span class="mopen">[</span><span style="margin-right:0.1132em;" class="mord mathnormal">τ</span><span class="mclose">]</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span><span class="mrel">=</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord"><span style="margin-right:0.00773em;" class="mord mathnormal">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:0.151392em;" class="vlist"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span style="height:2.7em;" class="pstrut"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:0.15em;" class="vlist"><span></span></span></span></span></span></span><span class="mopen">[</span><span style="margin-right:0.1132em;" class="mord mathnormal">τ</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span><span class="mbin">+</span><span style="margin-right:0.2222222222222222em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span style="margin-right:0.13889em;" class="mord mathnormal">T</span><span class="mclose">]</span></span></span></span></span>
+            <p class="regular_paragraph">Hence, by sampling the sound wave via a sample rate <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:0.68333em;vertical-align:0em;" class="strut"></span><span style="margin-right:0.05764em;" class="mord mathnormal">S</span><span style="margin-right:0.00773em;" class="mord mathnormal">R</span></span></span></span> (typical 44100Hz or 22050Hz) , calculating the autocorrelation function over sampled signal <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">n</span><span class="mclose">]</span></span></span></span>, we can readily acquire the period <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:0.68333em;vertical-align:0em;" class="strut"></span><span style="margin-right:0.13889em;" class="mord mathnormal">T</span></span></span></span> by recording the distance between two adjacent peaks. As long as figuring out the period of the waveform, deriving the corresponding frequency tends to be trivial, as shown below:</p>
+                <span class="katex-display"><span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:0.8888799999999999em;vertical-align:-0.19444em;" class="strut"></span><span style="margin-right:0.10764em;" class="mord mathnormal">f</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span><span class="mrel">=</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span></span><span class="base"><span style="height:2.04633em;vertical-align:-0.686em;" class="strut"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:1.36033em;" class="vlist"><span style="top:-2.314em;"><span style="height:3em;" class="pstrut"></span><span class="mord"><span style="margin-right:0.13889em;" class="mord mathnormal">T</span></span></span><span style="top:-3.23em;"><span style="height:3em;" class="pstrut"></span><span style="border-bottom-width:0.04em;" class="frac-line"></span></span><span style="top:-3.677em;"><span style="height:3em;" class="pstrut"></span><span class="mord"><span style="margin-right:0.05764em;" class="mord mathnormal">S</span><span style="margin-right:0.00773em;" class="mord mathnormal">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:0.686em;" class="vlist"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+            <p class="regular_paragraph">Then, with a fixed <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:0.8888799999999999em;vertical-align:-0.19444em;" class="strut"></span><span style="margin-right:0.05764em;" class="mord mathnormal">S</span><span class="mord mathnormal">p</span><span class="mord mathnormal">e</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span><span class="mspace">&nbsp;</span><span class="mord mathnormal">o</span><span style="margin-right:0.10764em;" class="mord mathnormal">f</span><span class="mspace">&nbsp;</span><span style="margin-right:0.05764em;" class="mord mathnormal">S</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span><span class="mrel">=</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord">3</span><span class="mord">4</span><span class="mord">5</span><span class="mspace">&nbsp;</span><span class="mord mathnormal">m</span><span class="mord">/</span><span class="mord mathnormal">s</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span><span class="mrel">=</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord">1</span><span class="mord">1</span><span class="mord">3</span><span class="mord">0</span><span class="mspace">&nbsp;</span><span style="margin-right:0.10764em;" class="mord mathnormal">f</span><span class="mord mathnormal">t</span><span class="mord">/</span><span class="mord mathnormal">s</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span><span class="mrel">=</span><span style="margin-right:0.2777777777777778em;" class="mspace"></span></span><span class="base"><span style="height:1em;vertical-align:-0.25em;" class="strut"></span><span class="mord">7</span><span class="mord">7</span><span class="mord">0</span><span class="mspace">&nbsp;</span><span class="mord mathnormal">m</span><span class="mord mathnormal">i</span><span style="margin-right:0.01968em;" class="mord mathnormal">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mord">/</span><span class="mord mathnormal">h</span><span style="margin-right:0.02778em;" class="mord mathnormal">r</span></span></span></span> and a specific tuning choice, frequency to pitch is a very nice one-to-one mapping:</p>
+            <div style="padding-left: 30px;">    
+            <table style="margin-left: auto;margin-right: auto;" class="rtable">
+                <thead>
+                <tr>
+                <th align="center">Note</th>
+                <th align="center">Frequency (Hz)</th>
+                <th align="center">Wavelength (cm)</th>
+                </tr>
+                </thead>
+                <tbody><tr>
+                <td align="center">C3</td>
+                <td align="center">130.81</td>
+                <td align="center">263.74</td>
+                </tr>
+                <tr>
+                <td align="center">D3</td>
+                <td align="center">146.83</td>
+                <td align="center">234.96</td>
+                </tr>
+                <tr>
+                <td align="center">E3</td>
+                <td align="center">164.81</td>
+                <td align="center">209.33</td>
+                </tr>
+                <tr>
+                <td align="center">F3</td>
+                <td align="center">174.61</td>
+                <td align="center">197.58</td>
+                </tr>
+                <tr>
+                <td align="center">G3</td>
+                <td align="center">196.00</td>
+                <td align="center">176.02</td>
+                </tr>
+                <tr>
+                <td align="center">A3</td>
+                <td align="center">220.00</td>
+                <td align="center">156.82</td>
+                </tr>
+                <tr>
+                <td align="center">B3</td>
+                <td align="center">246.94</td>
+                <td align="center">139.71</td>
+                </tr>
+                <tr>
+                <td align="center">C4</td>
+                <td align="center">261.63</td>
+                <td align="center">131.87</td>
+                </tr>
+                <tr>
+                <td align="center">D4</td>
+                <td align="center">293.66</td>
+                <td align="center">117.48</td>
+                </tr>
+                <tr>
+                <td align="center">E4</td>
+                <td align="center">329.63</td>
+                <td align="center">104.66</td>
+                </tr>
+                <tr>
+                <td align="center">F4</td>
+                <td align="center">349.23</td>
+                <td align="center">98.79</td>
+                </tr>
+                <tr>
+                <td align="center">G4</td>
+                <td align="center">392.00</td>
+                <td align="center">88.01</td>
+                </tr>
+                <tr>
+                <td align="center">A4</td>
+                <td align="center">440.00</td>
+                <td align="center">78.41</td>
+                </tr>
+                <tr>
+                <td align="center">B4</td>
+                <td align="center">493.88</td>
+                <td align="center">69.85</td>
+                </tr>
+                <tr>
+                <td align="center">C5</td>
+                <td align="center">523.25</td>
+                <td align="center">65.93</td>
+                </tr>
+                </tbody>
+            </table>
+            <figcaption>Table 1. An Instance that Maps Pitch Notes to the Corresponding Frequency</figcaption>
+        </div>
+            <p class="regular_paragraph">Table 1 above is an instance mapping pitch note in typical <a href="https://en.wikipedia.org/wiki/Clef">Alto Clef</a> to the corresponding frequency. We believe if the frequency we detected is closest to a certain frequency in the map, the corresponding pitch related to that frequency would be the exact the pitch we detect.</p>
+                </article>
       </div>
      <hr id='note'>
 
@@ -169,11 +269,11 @@ the start time in the event sequence will be adjusted according to the first bea
               <figure>
                 <img src="pics/clef.png" width="800">
                 <figcaption>
-                    Figure ?. The three clefs we supported and the pitch ranges 
+                    Figure ?. The three clefs it supports and the pitch ranges 
                     of them, cited from <a href="https://en.wikipedia.org/wiki/Clef">Clef - wikipedia</a>.
                 </figcaption>
               </figure>
-              <p style="text-align: justify;padding: 10px 0px 30px 30px;font-size: 18px;">
+              <p style="text-align: justify;padding: 10px 0px 30px 30px;font-size: 18px;margin-bottom: -10px;">
 In western musical notation, there are four key concepts: 
 clef, time signature, pitch name and pitch duration. Apparently 
 these four are not sufficient in a real music notation, at least 
@@ -187,16 +287,126 @@ same length as a quarter note</b>, which is an adjustable parameter.
 We only note down notes of pitches <b>between C2 and C6</b>. It covers 
 the most common range of frequencies. Whichever clef that most 
 beautifully presents the notes is chosen.
+</p>
+<p style="text-align: justify;padding: 0px 0px 30px 30px;font-size: 18px;margin-bottom: -10px;">
+An example of the outputs of the pitch detection module looks like:
+</p>
+<pre style="text-align: left;margin-left: 30px;margin-top: 0px;"><code># Clef
+clef = "alto"
+# Pitch names
+pitches = ['F♯3', 'G5', 'D♯4', 'F4', 'D♯4', 'F♯4', 'F4', 'E4', 'A3', 'A♯3', 'E4', 'G4', 'G♯5', 'A♯4']
+# Durations, 1/4 means a quarter length
+durations = [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+</code></pre>
+<p style="text-align: justify;padding: 10px 0px 30px 30px;font-size: 18px;">
+Each duration is matched to a pitch name and used to construct a <code>music21.stream.Stream</code> object, it will 
+then be converted into a Lilypond source and compiled using Lilypond, which directly exports a SVG graph
+of the corresponding musical notation.
               </p>
       </div>
 
     <hr id='result'>
 
       <div style="text-align:center;">
-      <h2>Results</h2>
-      </div>
+      <h2>Testing & Results</h2>
+      <div style="text-align: left;padding-left: 30px;">
+        <h3>1. Counting Numbers with Pauses</h3>
+        <p class="regular_paragraph" style="padding-bottom: 0px;">
+            In this experiment, a person counts numbers in Chinese 
+            (a language known for its four music-like tones) and speaks
+            into the microphone using this system. The recording is 
+            paused and resumed twice with numbers counting continuously.
+        </p>
+        <figure>
+            <img style="margin-left: -50px;" src="exps/counting_number/cn_spectral.svg">
+            <figcaption>Figure ?. The audio waves and beats of the counting numbers recording.</figcaption>
+        </figure>
+        <figure>
+            <img style="margin-left: -50px;" src="exps/counting_number/cn_notation.svg">
+            <figcaption>Figure ?. The generated notations of the counting numbers recording.</figcaption>
+        </figure>
+        <p class="regular_paragraph">
+            As you can see, although we cannot define the correct pitch for the counting, 
+            but it does show a plausible trending. You can notice that the 
+            length of the notation is shorter since it only considers the 
+            non-paused pieces. You can hear it here: 
+        </p>
+        <div style="padding-left: 30px; margin-top: -20px;text-align: center;">
+        <audio controls>
+            <source src="exps/counting_number/cn_voice.wav" type="audio/wav">
+        </audio>
+        </div>
+        <p class="regular_paragraph">
+            You can sense the discontinuity if you listen carefully, this is caused 
+            by the processing according to the pause and resume events recorded,  
+            as discussed in <a href="#record">Recording</a>.
+        </p>
+        <h3>2. Piano Finger Practice</h3>
+        <p class="regular_paragraph" style="padding-bottom: 0px;">
+            In this experiment, a piano finger practice video from the Youtube (<a href="https://www.youtube.com/watch?v=H2EiM5GUhB8">here</a>) is played while 
+            a person taps the beats along with it. 
+            The staff notation is best suited for the piano, 
+            and the wavy finger practice should give us a sense 
+            whether the notations are correct or not.
+        </p>
+        <figure>
+            <img style="margin-left: -50px;" src="exps/piano_fingers/pf_spectral.svg">
+            <figcaption>Figure ?. The audio waves and beats of the piano finger practice recording.</figcaption>
+        </figure>
+        <figure>
+            <img style="margin-left: -50px;" src="exps/piano_fingers/pf_notation.svg">
+            <figcaption>Figure ?. The generated notations of the piano finger practice recording.</figcaption>
+        </figure>
+        <p class="regular_paragraph">
+            The wavy pattern of the finger practice is quite clear on the genrated notation.
+            But you may also notice that there are some large shifts clearly wrong. 
+            These are good examples of octave error inherent to the algorithm we used 
+            for pitch detection, as discussed in <a href="#pitch">Pitch Detection</a>. 
+            You can hear the recording here:
+        </p>
+        <div style="padding-left: 30px; margin-top: -20px;text-align: center;">
+        <audio controls>
+            <source src="exps/piano_fingers/pf_voice.wav" type="audio/wav">
+        </audio>
+        </div>
+        <p class="regular_paragraph">
+            Try to sense the wavy pattern yourself :)
+        </p>
+        <h3>3. Singing Amazing Grace</h3>
+        <p class="regular_paragraph" style="padding-bottom: 0px;">
+            In this experiment, a person sings the first verse of the Amazing Grace song 
+            into the microphone while tapping the beats on its own pace. 
+            This recording is significantly longer, and singing to one's own pace 
+            should make the beats more accurate.
+        </p>
+        <figure>
+            <img style="margin-left: -50px;" src="exps/amazing_grace/ag_spectral.svg">
+            <figcaption>Figure ?. The audio waves and beats of the amazing grace singing recording.</figcaption>
+        </figure>
+        <figure>
+            <img style="margin-left: -50px;" src="exps/amazing_grace/ag_notation.svg">
+            <figcaption>Figure ?. The generated notations of the amazing grace singing recording.</figcaption>
+        </figure>
+        <p class="regular_paragraph">
+            As you can see, it does look like a music 
+            notation for a song and it correctly 
+            decides the alto clef (suitable for human voice), although its accuracy 
+            is still not that great. 
+            You can hear it here: 
+        </p>
+        <div style="padding-left: 30px; margin-top: -20px;text-align: center;">
+        <audio controls>
+            <source src="exps/amazing_grace/ag_voice.wav" type="audio/wav">
+        </audio>
+        </div>
+        <p class="regular_paragraph">
+            Well, it is functional enough to perform automatic music notation, 
+            but clearly it needs to work on the accuracy.
+        </p>
+      </div>    
+    </div>
     
-      <hr id='Future'>
+      <hr id='future'>
 
       <div style="text-align:center;">
       <h2>Future</h2>
